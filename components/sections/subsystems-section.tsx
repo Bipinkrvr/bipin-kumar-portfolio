@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Cpu, Terminal, Database, Code2, Zap } from "lucide-react";
@@ -91,35 +91,62 @@ const subsystems = [
 export function SkillsSection() {
   const [activeCards, setActiveCards] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  // Track which cards have been auto-revealed to prevent them from toggling randomly during scroll
+  const revealedCards = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // FIX: Store the actual width so we can ignore vertical height resizing (address bar)
     let lastWidth = window.innerWidth;
-
     const handleResize = () => {
       const currentWidth = window.innerWidth;
       if (currentWidth !== lastWidth) {
         lastWidth = currentWidth;
         const mobile = currentWidth < 768;
         setIsMobile(mobile);
-        if (mobile) {
-          setActiveCards(subsystems.map(s => s.id));
-        } else {
+        if (!mobile) {
           setActiveCards([]); 
+          revealedCards.current.clear(); // Reset memory on desktop
         }
       }
     };
 
     const initialMobile = window.innerWidth < 768;
     setIsMobile(initialMobile);
-    if (initialMobile) {
-        setActiveCards(subsystems.map(s => s.id));
-    }
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    // FIX: Intersection Observer for Mobile Auto-Scroll Animation
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Only run the observer logic on mobile
+        if (window.innerWidth >= 768) return;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("data-id");
+            if (id && !revealedCards.current.has(id)) {
+              // Mark it as revealed so we don't force it ON again if the user manually turned it OFF
+              revealedCards.current.add(id);
+              setActiveCards((prev) => {
+                if (!prev.includes(id)) return [...prev, id];
+                return prev;
+              });
+            }
+          }
+        });
+      },
+      { threshold: 0.5 } // Triggers when the card is 50% visible on screen
+    );
+
+    document.querySelectorAll(".subsystem-card").forEach((card) => {
+      observer.observe(card);
+    });
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      observer.disconnect();
+    };
   }, []);
 
   const latestActiveId = activeCards.length > 0 ? activeCards[activeCards.length - 1] : null;
@@ -143,17 +170,14 @@ export function SkillsSection() {
   };
 
   return (
-    // FIX: Removed snap-center and changed to min-h-[100svh]
-    <section id="skills" className="w-full min-h-[100svh] flex flex-col justify-center relative py-20 px-4 sm:px-8 overflow-hidden">
+    // FIX: Removed min-h-[100svh] and added padding (py-12 sm:py-20) to eliminate scroll jerks
+    <section id="skills" className="w-full flex flex-col justify-center relative py-12 sm:py-20 px-4 sm:px-8 overflow-hidden bg-transparent">
       <div className="w-full max-w-4xl mx-auto flex items-center gap-3 mb-6 border-b border-zinc-200 pb-3">
         <Code2 className="w-6 h-6 text-cyan-600" />
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-zinc-800 tracking-wider">
           [SUBSYSTEMS_TOOLKIT]
         </h2>
-        {/* Helper badge only visible on mobile to explain interaction */}
-        <span className="ml-auto text-[10px] font-mono text-zinc-400 bg-zinc-100 px-2 py-1 rounded border border-zinc-200 md:hidden">
-          TAP TO SWITCH
-        </span>
+        {/* REMOVED: Tap to Switch badge has been removed as requested */}
       </div>
 
       <div className="relative mt-2 mb-6 w-full max-w-4xl mx-auto">

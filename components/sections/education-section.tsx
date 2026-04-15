@@ -1,230 +1,375 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Cpu, Database, HardDrive, Fan, Zap } from "lucide-react";
 
 export function EducationSection() {
-  const posWire = `
-    transition-all duration-1000 ease-in-out pointer-events-none bg-zinc-300
-    group-has-[.edu-cyan:hover]/board:bg-cyan-500 group-has-[.edu-cyan:hover]/board:shadow-[0_0_10px_rgba(6,182,212,0.5)]
-    group-has-[.edu-emerald:hover]/board:bg-emerald-500 group-has-[.edu-emerald:hover]/board:shadow-[0_0_10px_rgba(16,185,129,0.5)]
-    group-has-[.edu-amber:hover]/board:bg-amber-500 group-has-[.edu-amber:hover]/board:shadow-[0_0_10px_rgba(245,158,11,0.5)]
-  `;
+  const sectionRef = useRef<HTMLElement>(null);
+  const fanRefs = useRef<(HTMLDivElement | null)[]>([]);
+  
+  // Independent Circuit Triggers
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMcbOn, setIsMcbOn] = useState(false);
+  const [hasAutoStarted, setHasAutoStarted] = useState(false);
 
-  const negWire = `
-    transition-all duration-1000 ease-in-out pointer-events-none bg-zinc-300
-    group-has-[.battery-cell:hover]/board:bg-blue-500 group-has-[.battery-cell:hover]/board:shadow-[0_0_10px_rgba(59,130,246,0.5)]
-  `;
+  // The circuit is active if ANY trigger is engaged
+  const isCircuitActive = isHovered || isMcbOn;
+
+  // Physics state for smooth motor inertia
+  const rotationRef = useRef(0);
+  const speedRef = useRef(0);
+
+  // Mobile: Auto-Start Circuit on Scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAutoStarted && window.innerWidth < 768) {
+          setIsMcbOn(true);
+          setHasAutoStarted(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [hasAutoStarted]);
+
+  // RequestAnimationFrame loop for realistic motor inertia (Spin up / Spin down)
+  useEffect(() => {
+    let animationFrameId: number;
+    let lastActive = isCircuitActive;
+
+    const animateMotor = () => {
+      // Accelerate if ON, Decelerate if OFF
+      if (lastActive) {
+        speedRef.current = Math.min(speedRef.current + 0.3, 20); // Max Speed
+      } else {
+        speedRef.current = Math.max(speedRef.current - 0.2, 0); // Inertia slow-down
+      }
+      
+      // Apply rotation if moving
+      if (speedRef.current > 0) {
+        rotationRef.current = (rotationRef.current + speedRef.current) % 360;
+        fanRefs.current.forEach(fanWrapper => {
+          if (fanWrapper) fanWrapper.style.transform = `rotate(${rotationRef.current}deg)`;
+        });
+      }
+      
+      // Continue animation loop if circuit is on OR motor is still spinning down
+      if (lastActive || speedRef.current > 0) {
+        animationFrameId = requestAnimationFrame(animateMotor);
+      }
+    };
+    
+    // Start loop
+    animationFrameId = requestAnimationFrame(animateMotor);
+
+    // Update closure reference when React state changes
+    lastActive = isCircuitActive;
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isCircuitActive]);
+
+  // Unified Wire CSS
+  const posWire = `transition-all duration-1000 ease-in-out z-10 ${isCircuitActive ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-zinc-300'}`;
+  const negWire = `transition-all duration-1000 ease-in-out z-10 ${isCircuitActive ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]' : 'bg-zinc-300'}`;
+  
+  const motorChassis = `transition-all duration-1000 border-[5px] bg-white shadow-sm z-30 flex items-center justify-center rounded-full ${isCircuitActive ? 'border-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.4)]' : 'border-zinc-200'}`;
+  const motorIcon = `transition-colors duration-500 ${isCircuitActive ? 'text-cyan-500' : 'text-zinc-300'}`;
 
   const education = [
     {
-      id: "edu-cyan",
-      title: "B.Tech // Electrical",
-      institution: "BIT Sindri",
-      timeline: "2023 - 2027",
-      status: "DISCHARGING: 75%",
-      chargeHeight: "h-[75%]",
-      description: "6th Semester. Bridging hardware physics with scalable software architecture.",
-      modules: ["Power Electronics", "Control Systems"],
-      icon: Cpu,
-      theme: {
-        text: "text-cyan-600",
-        border: "group-hover:border-cyan-400",
-        shadow: "group-hover:shadow-[0_10px_30px_rgba(6,182,212,0.15)]",
-        badge: "group-hover:border-cyan-300 group-hover:text-cyan-700",
-        energyFill: "bg-cyan-100/50 group-has-[.battery-cell:hover]/board:bg-cyan-200 group-has-[.battery-cell:hover]/board:shadow-[0_0_15px_rgba(6,182,212,0.2)]",
-      }
+      title: "B.Tech // Electrical", institution: "BIT Sindri", timeline: "2023 - 2027", status: "DISCHARGING: 75%", chargeHeight: "h-[75%]",
+      description: "6th Semester. Bridging hardware physics with scalable software architecture.", modules: ["Power Electronics", "Control Systems"], icon: Cpu,
+      active: { border: "border-cyan-400", shadow: "shadow-[0_10px_30px_rgba(6,182,212,0.15)]", badge: "border-cyan-300 text-cyan-700 bg-white", energyFill: "bg-cyan-200", text: "text-cyan-600", termBg: "bg-white", termBorder: "border-zinc-200" },
+      inactive: { border: "border-zinc-200", shadow: "shadow-sm", badge: "border-zinc-200 text-zinc-500 bg-white", energyFill: "bg-zinc-100/50", text: "text-zinc-400", termBg: "bg-zinc-200", termBorder: "border-zinc-300" }
     },
     {
-      id: "edu-emerald", 
-      title: "Senior Secondary",
-      institution: "Your School Name", 
-      timeline: "2021 - 2023",
-      status: "CAPACITY: 100%", 
-      chargeHeight: "h-[100%]",
-      description: "Core processing focus on Physics, Chemistry, and Mathematics (PCM).",
-      modules: ["Physics", "Calculus"],
-      icon: Database,
-      theme: {
-        text: "text-emerald-600",
-        border: "group-hover:border-emerald-400",
-        shadow: "group-hover:shadow-[0_10px_30px_rgba(16,185,129,0.15)]",
-        badge: "group-hover:border-emerald-300 group-hover:text-emerald-700",
-        energyFill: "bg-emerald-100/50 group-has-[.battery-cell:hover]/board:bg-emerald-200 group-has-[.battery-cell:hover]/board:shadow-[0_0_15px_rgba(16,185,129,0.2)]",
-      }
+      title: "Senior Secondary", institution: "Your School Name", timeline: "2021 - 2023", status: "CAPACITY: 100%", chargeHeight: "h-[100%]",
+      description: "Core processing focus on Physics, Chemistry, and Mathematics (PCM).", modules: ["Physics", "Calculus"], icon: Database,
+      active: { border: "border-emerald-400", shadow: "shadow-[0_10px_30px_rgba(16,185,129,0.15)]", badge: "border-emerald-300 text-emerald-700 bg-white", energyFill: "bg-emerald-200", text: "text-emerald-600", termBg: "bg-white", termBorder: "border-zinc-200" },
+      inactive: { border: "border-zinc-200", shadow: "shadow-sm", badge: "border-zinc-200 text-zinc-500 bg-white", energyFill: "bg-zinc-100/50", text: "text-zinc-400", termBg: "bg-zinc-200", termBorder: "border-zinc-300" }
     },
     {
-      id: "edu-amber", 
-      title: "Secondary",
-      institution: "Your School Name",
-      timeline: "2019 - 2021",
-      status: "CAPACITY: 100%",
-      chargeHeight: "h-[100%]",
-      description: "System initialization sequence. Foundational sciences and math reasoning.",
-      modules: ["Mathematics", "Logic Foundation"],
-      icon: HardDrive,
-      theme: {
-        text: "text-amber-600",
-        border: "group-hover:border-amber-400",
-        shadow: "group-hover:shadow-[0_10px_30px_rgba(245,158,11,0.15)]",
-        badge: "group-hover:border-amber-300 group-hover:text-amber-700",
-        energyFill: "bg-amber-100/50 group-has-[.battery-cell:hover]/board:bg-amber-200 group-has-[.battery-cell:hover]/board:shadow-[0_0_15px_rgba(245,158,11,0.2)]",
-      }
+      title: "Secondary", institution: "Your School Name", timeline: "2019 - 2021", status: "CAPACITY: 100%", chargeHeight: "h-[100%]",
+      description: "System initialization sequence. Foundational sciences and math reasoning.", modules: ["Mathematics", "Logic Foundation"], icon: HardDrive,
+      active: { border: "border-amber-400", shadow: "shadow-[0_10px_30px_rgba(245,158,11,0.15)]", badge: "border-amber-300 text-amber-700 bg-white", energyFill: "bg-amber-200", text: "text-amber-600", termBg: "bg-white", termBorder: "border-zinc-200" },
+      inactive: { border: "border-zinc-200", shadow: "shadow-sm", badge: "border-zinc-200 text-zinc-500 bg-white", energyFill: "bg-zinc-100/50", text: "text-zinc-400", termBg: "bg-zinc-200", termBorder: "border-zinc-300" }
     }
   ];
 
   return (
-    <section id="education" className="w-full min-h-screen flex flex-col justify-center relative py-20 overflow-hidden">
+    <section id="education" ref={sectionRef} className="w-full flex flex-col justify-center relative py-12 sm:py-20 overflow-hidden bg-transparent">
       
-      <div className="flex items-center gap-3 mb-2 border-b border-zinc-200 pb-3 shrink-0 px-6 sm:px-12 max-w-6xl mx-auto w-full">
+      <div className="flex items-center gap-3 mb-6 sm:mb-10 border-b border-zinc-200 pb-3 shrink-0 px-6 sm:px-12 max-w-6xl mx-auto w-full">
         <Zap className="w-6 h-6 text-cyan-600" />
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-zinc-800 tracking-wider">
           [CORE_ARCHITECTURE]
         </h2>
       </div>
 
-      <div className="w-full flex-grow overflow-hidden flex items-center relative">
-        <div className="relative max-w-5xl mx-auto w-full group/board px-8 sm:px-12 h-[550px]">
+      <div className="w-full flex-grow flex items-center justify-center relative">
+        
+        {/* ======================================================== */}
+        {/* DESKTOP LAYOUT */}
+        {/* ======================================================== */}
+        <div className="hidden md:block relative max-w-5xl mx-auto w-full px-12 h-auto pb-12">
+          <div className="grid grid-cols-3 gap-x-8 w-full h-full relative" style={{ gridTemplateRows: '140px 24px auto 24px' }}>
+            
+            {/* Global Negative Trunk */}
+            <div className={`absolute top-[68px] bottom-[12px] left-[-32px] w-[4px] ${negWire}`}></div>
 
-          {/* THE CIRCUIT GRID */}
-          <div 
-            className="grid grid-cols-3 gap-x-8 w-full h-full relative"
-            style={{ gridTemplateRows: '140px 24px minmax(0, 1fr) 24px' }}
-          >
-            
-            {/* --- GLOBAL NEGATIVE TRUNK --- */}
-            {/* Anchored EXACTLY 24px/32px to the left of the grid. Physically impossible to overlap the battery card. 
-                top-[68px] and bottom-[10px] perfectly cap the horizontal wires. */}
-            <div className={`absolute top-[68px] bottom-[10px] left-[-24px] sm:left-[-32px] w-[4px] z-10 ${negWire}`}></div>
-
-            
-            {/* ================= ROW 1: FAN & MCB ================= */}
-            
-            {/* Col 1: Horizontal wire connecting Global Trunk to Fan */}
+            {/* ROW 1: FAN & MCB */}
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-24px] sm:left-[-32px] right-[-16px] h-[4px] -translate-y-1/2 z-10 ${negWire}`}></div>
+               <div className={`absolute top-1/2 left-[-32px] right-[-17px] h-[4px] -translate-y-1/2 ${negWire}`}></div>
             </div>
 
-            {/* Col 2: The Fan */}
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-16px] right-[50%] h-[4px] -translate-y-1/2 z-10 ${negWire}`}></div>
-               <div className={`absolute top-1/2 left-[50%] right-[-16px] h-[4px] -translate-y-1/2 z-10 ${posWire}`}></div>
+               <div className={`absolute top-1/2 left-[-17px] right-[50%] h-[4px] -translate-y-1/2 ${negWire}`}></div>
+               <div className={`absolute top-1/2 left-[50%] right-[-17px] h-[4px] -translate-y-1/2 ${posWire}`}></div>
                
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-28 sm:h-28 rounded-full border-[5px] border-zinc-200 bg-white shadow-sm z-30 flex items-center justify-center transition-all duration-1000 group-has-[.battery-cell:hover]/board:border-zinc-300 group-has-[.battery-cell:hover]/board:shadow-[0_0_20px_rgba(0,0,0,0.05)]">
-                  <Fan className="w-12 h-12 sm:w-16 sm:h-16 text-zinc-300 transition-colors duration-500 group-has-[.battery-cell:hover]/board:animate-spin group-has-[.battery-cell:hover]/board:[animation-duration:0.4s] group-has-[.edu-cyan:hover]/board:text-cyan-500 group-has-[.edu-emerald:hover]/board:text-emerald-500 group-has-[.edu-amber:hover]/board:text-amber-500" />
+               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 ${motorChassis}`}>
+                  {/* FIX: Wrapper DIV prevents React from clobbering inline style transforms when classes change */}
+                  <div ref={el => { fanRefs.current[0] = el }} className="w-full h-full flex items-center justify-center">
+                     <Fan className={`w-16 h-16 ${motorIcon}`} />
+                  </div>
                   <div className="absolute w-5 h-5 bg-zinc-100 rounded-full border-2 border-zinc-200 z-10"></div>
                </div>
+               {/* Motor Rating */}
+               <span className="absolute -top-3 -left-6 text-[10px] font-mono font-bold text-zinc-500 tracking-wider bg-white/90 px-1 border border-zinc-200 rounded whitespace-nowrap z-40 shadow-sm">BLDC_24V_3000RPM</span>
             </div>
 
-            {/* Col 3: The MCB */}
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-16px] right-[50%] h-[4px] -translate-y-1/2 z-10 ${posWire}`}></div>
-               <div className={`absolute top-1/2 bottom-0 left-[50%] w-[4px] -translate-x-[2px] z-10 ${posWire}`}></div>
+               <div className={`absolute top-1/2 left-[-17px] right-[50%] h-[4px] -translate-y-1/2 ${posWire}`}></div>
+               <div className={`absolute top-1/2 bottom-0 left-[50%] w-[4px] -translate-x-[2px] ${posWire}`}></div>
                
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-20 sm:w-20 sm:h-24 bg-white border-2 border-zinc-300 rounded-lg z-30 flex flex-col items-center justify-center shadow-sm">
+               <div 
+                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-24 bg-white border-2 border-zinc-300 rounded-lg z-30 flex flex-col items-center justify-center shadow-sm cursor-pointer hover:border-zinc-400 active:scale-95 transition-all"
+                 onClick={() => setIsMcbOn(!isMcbOn)}
+                 title="Toggle Circuit Breaker"
+               >
                   <div className="w-4 h-2.5 bg-zinc-300 absolute -top-2.5 rounded-t-sm" />
                   <div className="w-4 h-2.5 bg-zinc-300 absolute -bottom-2.5 rounded-b-sm" />
-                  <span className="text-[7px] sm:text-[9px] font-mono text-zinc-500 absolute top-2 font-bold">MCB</span>
-                  
-                  <div className="w-2 h-2 rounded-full absolute top-5 sm:top-6 bg-red-500 transition-colors duration-1000 group-has-[.battery-cell:hover]/board:bg-emerald-500 group-has-[.battery-cell:hover]/board:shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                  <span className="text-[9px] font-mono text-zinc-800 absolute top-1.5 font-black">MCB</span>
+                  <span className="text-[6px] font-mono text-zinc-500 absolute top-5 font-bold tracking-wider">32A DC_ISO</span>
+                  <div className={`w-2 h-2 rounded-full absolute top-8 transition-colors duration-1000 ${isCircuitActive ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500'}`} />
 
-                  <div className="w-6 h-8 sm:w-7 sm:h-10 mt-5 sm:mt-6 bg-zinc-100 rounded-sm shadow-inner relative flex justify-center p-1 border border-zinc-200">
+                  <div className="w-7 h-10 mt-8 bg-zinc-100 rounded-sm shadow-inner relative flex justify-center p-1 border border-zinc-200">
                      <div className="w-1.5 h-full bg-zinc-300 rounded-full"></div>
-                     <div className="w-full h-3 sm:h-4 bg-red-500 rounded-sm absolute bottom-1 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-has-[.battery-cell:hover]/board:bg-emerald-500 group-has-[.battery-cell:hover]/board:-translate-y-[14px] sm:group-has-[.battery-cell:hover]/board:-translate-y-[20px] shadow-sm flex items-center justify-center">
+                     <div className={`w-full h-4 rounded-sm absolute bottom-1 transition-all duration-500 shadow-sm flex items-center justify-center ${isCircuitActive ? 'bg-cyan-500 -translate-y-[20px]' : 'bg-red-500'}`}>
                         <div className="w-full h-[1.5px] bg-white/50"></div>
                      </div>
                   </div>
                </div>
             </div>
 
-
-            {/* ================= ROW 2: POSITIVE BUS BAR ================= */}
+            {/* ROW 2: POSITIVE BUS BAR */}
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[50%] right-[-16px] h-[4px] -translate-y-1/2 z-10 ${posWire}`}></div>
-               <div className={`absolute top-1/2 bottom-0 left-[50%] w-[4px] -translate-x-[2px] z-10 ${posWire}`}></div>
+               <div className={`absolute top-1/2 left-[50%] right-[-17px] h-[4px] -translate-y-1/2 ${posWire}`}></div>
+               <div className={`absolute top-1/2 bottom-0 left-[50%] w-[4px] -translate-x-[2px] ${posWire}`}></div>
             </div>
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-16px] right-[-16px] h-[4px] -translate-y-1/2 z-10 ${posWire}`}></div>
-               <div className={`absolute top-1/2 bottom-0 left-[50%] w-[4px] -translate-x-[2px] z-10 ${posWire}`}></div>
+               <div className={`absolute top-1/2 left-[-17px] right-[-17px] h-[4px] -translate-y-1/2 ${posWire}`}></div>
+               <div className={`absolute top-1/2 bottom-0 left-[50%] w-[4px] -translate-x-[2px] ${posWire}`}></div>
             </div>
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-16px] right-[50%] h-[4px] -translate-y-1/2 z-10 ${posWire}`}></div>
-               <div className={`absolute top-0 bottom-0 left-[50%] w-[4px] -translate-x-[2px] z-10 ${posWire}`}></div>
+               <div className={`absolute top-1/2 left-[-17px] right-[50%] h-[4px] -translate-y-1/2 ${posWire}`}></div>
+               <div className={`absolute top-0 bottom-0 left-[50%] w-[4px] -translate-x-[2px] ${posWire}`}></div>
             </div>
 
+            {/* ROW 3: BATTERY CELLS */}
+            {education.map((edu, idx) => {
+              const theme = isCircuitActive ? edu.active : edu.inactive;
 
-            {/* ================= ROW 3: BATTERY CELLS ================= */}
-            {education.map((edu, idx) => (
-              <div key={idx} className={`relative flex flex-col h-full w-full battery-cell group cursor-pointer ${edu.id}`}>
-                 
-                 <div className={`w-[4px] h-4 shrink-0 mx-auto z-10 ${posWire}`}></div>
-                 <div className="w-16 sm:w-20 h-3.5 bg-zinc-200 rounded-t-md border-t border-x border-zinc-300 mx-auto flex items-center justify-center transition-all duration-1000 group-hover:bg-white z-20 shadow-sm">
-                   <span className="text-[11px] font-black text-zinc-600">+</span>
-                 </div>
-
-                 <Card className={`relative overflow-hidden flex-grow w-full flex flex-col bg-white border-2 border-zinc-200 transition-all duration-1000 z-30 shadow-sm ${edu.theme.border} ${edu.theme.shadow}`}>
-                   <div className={`absolute bottom-0 left-0 right-0 w-full transition-all duration-1000 ${edu.chargeHeight} ${edu.theme.energyFill}`}>
-                      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-white opacity-60"></div>
+              return (
+                <div 
+                  key={idx} 
+                  className="relative flex flex-col h-full w-full pt-4 cursor-pointer"
+                  onMouseEnter={() => { if(window.innerWidth >= 768) setIsHovered(true) }}
+                  onMouseLeave={() => { if(window.innerWidth >= 768) setIsHovered(false) }}
+                >
+                   {/* Positive Terminal & Upward Penetrating Wire */}
+                   <div className={`absolute top-0 left-1/2 -translate-x-[2px] w-[4px] h-[16px] ${posWire}`}></div>
+                   <div className={`relative w-20 h-3.5 mx-auto flex items-center justify-center rounded-t-md border-t border-x z-20 shadow-sm transition-all duration-1000 ${theme.termBg} ${theme.termBorder}`}>
+                     <span className="text-[11px] font-black text-zinc-600">+</span>
                    </div>
 
-                   <div className="p-4 sm:p-5 relative z-10 flex flex-col h-full min-h-0">
-                     <div className="flex justify-between items-start mb-3 border-b border-zinc-100 pb-3 shrink-0">
-                       <Badge variant="outline" className={`bg-white font-mono text-[9px] sm:text-[10px] font-bold tracking-widest text-zinc-500 border-zinc-200 shadow-sm ${edu.theme.badge}`}>
-                         {edu.status}
-                       </Badge>
-                       <edu.icon className={`w-5 h-5 text-zinc-400 transition-colors duration-1000 group-hover:${edu.theme.text}`} />
+                   <Card className={`relative overflow-hidden flex-grow w-full flex flex-col bg-white border-2 transition-all duration-1000 z-30 h-auto ${theme.border} ${theme.shadow}`}>
+                     <div className={`absolute bottom-0 left-0 right-0 w-full transition-all duration-1000 ${edu.chargeHeight} ${theme.energyFill}`}>
+                        <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-white opacity-60"></div>
                      </div>
 
-                     <div className="mb-2 shrink-0">
-                       <h3 className={`font-mono text-base sm:text-lg font-bold text-zinc-800 transition-colors duration-1000 mb-1 leading-tight group-hover:${edu.theme.text}`}>{edu.title}</h3>
-                       <div className="text-[10px] sm:text-[11px] font-mono text-zinc-500 leading-tight">
-                         {edu.institution} <br/> <span className="text-zinc-600 font-bold">[{edu.timeline}]</span>
+                     <div className="p-5 relative z-10 flex flex-col h-full">
+                       <div className="flex justify-between items-start mb-3 border-b border-zinc-100 pb-3">
+                         <div className="flex flex-col gap-1">
+                           <Badge variant="outline" className={`font-mono text-[10px] font-bold tracking-widest transition-colors duration-1000 shadow-sm ${theme.badge}`}>{edu.status}</Badge>
+                           <span className="font-mono text-[8px] text-zinc-400 font-bold ml-1">12V_100Ah_CELL</span>
+                         </div>
+                         <edu.icon className={`w-5 h-5 transition-colors duration-1000 ${theme.text}`} />
+                       </div>
+
+                       <div className="mb-2">
+                         <h3 className={`font-mono text-lg font-bold transition-colors duration-1000 mb-1 leading-tight ${theme.text}`}>{edu.title}</h3>
+                         <div className="text-[11px] font-mono text-zinc-500 leading-tight">
+                           {edu.institution} <br/> <span className="text-zinc-600 font-bold">[{edu.timeline}]</span>
+                         </div>
+                       </div>
+
+                       <p className="text-xs font-mono text-zinc-600 leading-relaxed flex-grow my-2">
+                         {edu.description}
+                       </p>
+
+                       <div className="flex flex-wrap gap-1.5 mt-auto">
+                         {edu.modules.map((mod, modIdx) => (
+                           <Badge key={modIdx} variant="secondary" className={`border px-1.5 py-0 font-mono text-[10px] transition-colors duration-1000 ${theme.badge}`}>{mod}</Badge>
+                         ))}
                        </div>
                      </div>
+                   </Card>
 
-                     <p className="text-[11px] sm:text-xs font-mono text-zinc-600 leading-relaxed flex-grow overflow-y-auto custom-scrollbar my-2">
-                       {edu.description}
-                     </p>
-
-                     <div className="flex flex-wrap gap-1.5 mt-auto shrink-0">
-                       {edu.modules.map((mod, modIdx) => (
-                         <Badge key={modIdx} variant="secondary" className={`bg-zinc-50 border border-zinc-200 text-zinc-600 font-mono text-[9px] sm:text-[10px] px-1.5 py-0 ${edu.theme.badge}`}>{mod}</Badge>
-                       ))}
-                     </div>
+                   {/* Negative Terminal & Downward Penetrating Wire */}
+                   <div className={`relative w-20 h-3.5 mx-auto flex items-center justify-center rounded-b-md border-b border-x z-20 shadow-sm transition-all duration-1000 bg-zinc-300 border-zinc-400`}>
+                     <span className="text-[11px] font-black text-zinc-100">-</span>
                    </div>
-                 </Card>
+                   <div className={`absolute bottom-0 left-1/2 -translate-x-[2px] w-[4px] h-[16px] ${negWire}`}></div>
+                </div>
+              );
+            })}
 
-                 <div className="w-16 sm:w-20 h-3.5 bg-zinc-300 rounded-b-md border-b border-x border-zinc-400 mx-auto flex items-center justify-center transition-all duration-1000 group-hover:bg-zinc-400 z-20 shadow-sm">
-                   <span className="text-[11px] font-black text-zinc-100">-</span>
-                 </div>
-                 <div className={`w-[4px] h-4 shrink-0 mx-auto z-10 ${negWire}`}></div>
-              </div>
-            ))}
-
-
-            {/* ================= ROW 4: NEGATIVE BUS BAR ================= */}
+            {/* ROW 4: NEGATIVE BUS BAR */}
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-24px] sm:left-[-32px] right-[-16px] h-[4px] -translate-y-1/2 z-10 ${negWire}`}></div>
-               <div className={`absolute top-0 bottom-1/2 left-[50%] w-[4px] -translate-x-[2px] z-10 ${negWire}`}></div>
+               <div className={`absolute top-0 bottom-1/2 left-[50%] w-[4px] -translate-x-[2px] ${negWire}`}></div>
+               <div className={`absolute top-1/2 left-[-32px] right-[-17px] h-[4px] -translate-y-1/2 ${negWire}`}></div>
             </div>
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-16px] right-[-16px] h-[4px] -translate-y-1/2 z-10 ${negWire}`}></div>
-               <div className={`absolute top-0 bottom-1/2 left-[50%] w-[4px] -translate-x-[2px] z-10 ${negWire}`}></div>
+               <div className={`absolute top-0 bottom-1/2 left-[50%] w-[4px] -translate-x-[2px] ${negWire}`}></div>
+               <div className={`absolute top-1/2 left-[-17px] right-[-17px] h-[4px] -translate-y-1/2 ${negWire}`}></div>
             </div>
             <div className="relative w-full h-full">
-               <div className={`absolute top-1/2 left-[-16px] right-[50%] h-[4px] -translate-y-1/2 z-10 ${negWire}`}></div>
-               <div className={`absolute top-0 bottom-1/2 left-[50%] w-[4px] -translate-x-[2px] z-10 ${negWire}`}></div>
+               <div className={`absolute top-0 bottom-1/2 left-[50%] w-[4px] -translate-x-[2px] ${negWire}`}></div>
+               <div className={`absolute top-1/2 left-[-17px] right-[50%] h-[4px] -translate-y-1/2 ${negWire}`}></div>
             </div>
 
           </div>
         </div>
-      </div>
 
-      <style dangerouslySetInnerHTML={{__html: `
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(244, 244, 245, 1); border-radius: 2px;}
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(212, 212, 216, 1); border-radius: 2px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(161, 161, 170, 1); }
-      `}} />
+
+        {/* ======================================================== */}
+        {/* MOBILE LAYOUT (True vertical responsive stack) */}
+        {/* ======================================================== */}
+        <div className="md:hidden relative w-full max-w-[400px] mx-auto px-4 sm:px-8 py-2 flex flex-col gap-10">
+          
+          {/* Main Vertical Bus Bars (z-20 brings them in front of the horizontal wires) */}
+          <div className={`absolute left-4 sm:left-8 top-8 bottom-8 w-[4px] rounded-none z-20 ${negWire}`}></div>
+          <div className={`absolute right-4 sm:right-8 top-8 bottom-8 w-[4px] rounded-none z-20 ${posWire}`}></div>
+
+          {/* Top Section: Fan and MCB */}
+          <div className="flex justify-between items-center relative z-20 w-full">
+             
+             {/* FIX: -ml-2 stretches the wire perfectly UNDER the z-20 vertical bus bar */}
+             <div className={`h-[4px] flex-grow -ml-2 z-10 ${negWire}`}></div>
+
+             {/* The Fan */}
+             <div className="relative flex items-center justify-center">
+                <div className={`relative w-20 h-20 ${motorChassis}`}>
+                  {/* FIX: Wrapper DIV preserves rotation state */}
+                  <div ref={el => { fanRefs.current[1] = el }} className="w-full h-full flex items-center justify-center">
+                    <Fan className={`w-10 h-10 ${motorIcon}`} />
+                  </div>
+                  <div className="absolute w-3 h-3 bg-zinc-100 rounded-full border-2 border-zinc-200 z-10"></div>
+                </div>
+                {/* Motor Rating Mobile */}
+                <span className="absolute -top-6 -left-1 text-[8px] font-mono font-bold text-zinc-500 tracking-wider bg-white px-1 border border-zinc-200 rounded shadow-sm z-40 whitespace-nowrap">BLDC_24V_3000RPM</span>
+             </div>
+
+             {/* Wire between Fan and MCB */}
+             <div className={`h-[4px] w-4 shrink-0 z-10 ${posWire}`}></div>
+
+             {/* The MCB */}
+             <div 
+                className="relative w-16 h-20 bg-white border-2 border-zinc-300 rounded-lg z-30 flex flex-col items-center justify-center shadow-sm cursor-pointer active:scale-95 transition-all"
+                onClick={() => setIsMcbOn(!isMcbOn)}
+             >
+                <div className="w-3 h-2 bg-zinc-300 absolute -top-2 rounded-t-sm" />
+                <div className="w-3 h-2 bg-zinc-300 absolute -bottom-2 rounded-b-sm" />
+                <span className="text-[8px] font-mono text-zinc-800 absolute top-1 font-black">MCB</span>
+                <span className="text-[5px] font-mono text-zinc-500 absolute top-4 font-bold tracking-wider">32A DC_ISO</span>
+                
+                <div className={`w-1.5 h-1.5 rounded-full absolute top-7 transition-colors duration-1000 ${isCircuitActive ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500'}`} />
+
+                <div className="w-5 h-8 mt-6 bg-zinc-100 rounded-sm shadow-inner relative flex justify-center p-1 border border-zinc-200">
+                   <div className="w-1 h-full bg-zinc-300 rounded-full"></div>
+                   <div className={`w-full h-3 rounded-sm absolute bottom-0.5 transition-all duration-500 shadow-sm flex items-center justify-center ${isCircuitActive ? 'bg-cyan-500 -translate-y-[14px]' : 'bg-red-500'}`}>
+                      <div className="w-full h-[1px] bg-white/50"></div>
+                   </div>
+                </div>
+             </div>
+
+             {/* FIX: -mr-2 stretches the wire perfectly UNDER the z-20 vertical bus bar */}
+             <div className={`h-[4px] flex-grow -mr-2 z-10 ${posWire}`}></div>
+          </div>
+
+          {/* Battery Stack (Horizontal Card Design for Mobile) */}
+          <div className="flex flex-col gap-6 w-full z-20">
+             {education.map((edu, idx) => {
+               const theme = isCircuitActive ? edu.active : edu.inactive;
+
+               return (
+                <div key={`mob-${idx}`} className="flex items-stretch w-full relative">
+                   
+                   {/* FIX: -ml-2 stretches the wire perfectly UNDER the z-20 vertical bus bar */}
+                   <div className={`h-[4px] self-center flex-grow -ml-2 z-10 ${negWire}`}></div>
+                   
+                   {/* Negative Terminal */}
+                   <div className="w-5 sm:w-6 flex items-center justify-center rounded-l-md border z-30 shadow-sm relative bg-zinc-300 border-zinc-400">
+                      <span className="text-xs font-black text-zinc-100">-</span>
+                   </div>
+
+                   {/* Battery Card */}
+                   <Card className={`flex-grow h-auto max-w-[260px] flex flex-col bg-white border-y-2 transition-all duration-1000 z-30 shadow-sm relative overflow-hidden ${theme.border} ${theme.shadow}`}>
+                      <div className={`absolute bottom-0 left-0 w-full transition-all duration-1000 ${edu.chargeHeight} ${theme.energyFill}`}></div>
+                      
+                      <div className="p-3 sm:p-4 relative z-10 flex flex-col">
+                        <div className="flex justify-between items-start mb-2">
+                           <div className="flex flex-col gap-0.5">
+                              <Badge variant="outline" className={`font-mono text-[8px] font-bold tracking-widest transition-colors duration-1000 shadow-sm px-1 py-0 ${theme.badge}`}>{edu.status}</Badge>
+                              <span className="font-mono text-[7px] text-zinc-400 font-bold ml-0.5">12V_100Ah_CELL</span>
+                           </div>
+                           <edu.icon className={`w-4 h-4 transition-colors duration-1000 ${theme.text}`} />
+                        </div>
+                        <h3 className={`font-mono text-xs sm:text-sm font-bold transition-colors duration-1000 mb-0.5 leading-tight ${theme.text}`}>{edu.title}</h3>
+                        <div className="text-[9px] font-mono text-zinc-500 leading-tight mb-2">
+                           {edu.institution} <span className="text-zinc-600 font-bold">[{edu.timeline}]</span>
+                        </div>
+                        <p className="text-[10px] sm:text-xs font-mono text-zinc-600 leading-snug mb-3">
+                           {edu.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1 mt-auto">
+                           {edu.modules.map((mod, modIdx) => (
+                             <Badge key={modIdx} variant="secondary" className={`border px-1 py-0 font-mono text-[8px] transition-colors duration-1000 ${theme.badge}`}>{mod}</Badge>
+                           ))}
+                        </div>
+                      </div>
+                   </Card>
+
+                   {/* Positive Terminal */}
+                   <div className={`w-5 sm:w-6 flex items-center justify-center rounded-r-md border z-30 shadow-sm transition-all duration-1000 relative ${theme.termBg} ${theme.termBorder}`}>
+                      <span className="text-xs font-black text-zinc-600">+</span>
+                   </div>
+
+                   {/* FIX: -mr-2 stretches the wire perfectly UNDER the z-20 vertical bus bar */}
+                   <div className={`h-[4px] self-center flex-grow -mr-2 z-10 ${posWire}`}></div>
+                </div>
+               );
+             })}
+          </div>
+
+        </div>
+
+      </div>
     </section>
   );
 }
