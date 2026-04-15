@@ -73,7 +73,7 @@ export function EducationSection() {
   ];
 
   return (
-    <section id="education" className="w-full h-[100dvh] min-h-[650px] snap-center flex flex-col justify-center relative pt-16 pb-4 overflow-hidden">
+    <section id="education" className="w-full min-h-screen flex flex-col justify-center relative py-20 overflow-hidden">
       
       <div className="flex items-center gap-3 mb-2 border-b border-zinc-200 pb-3 shrink-0 px-6 sm:px-12 max-w-6xl mx-auto w-full">
         <Zap className="w-6 h-6 text-cyan-600" />

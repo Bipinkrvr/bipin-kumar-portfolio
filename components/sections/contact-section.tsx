@@ -37,7 +37,7 @@ export function ContactSection() {
 
   return (
     // overflow-hidden absolutely locks this to 100dvh to stop overlapping
-    <section id="contact" className="w-full h-[100dvh] min-h-[600px] snap-center flex flex-col justify-center px-4 sm:px-6 relative overflow-hidden pt-16 pb-4">
+    <section id="contact" className="w-full min-h-screen flex flex-col justify-center px-4 sm:px-6 relative overflow-hidden py-20">
       <div className="w-full max-w-4xl mx-auto relative z-10 flex flex-col items-center flex-grow min-h-0 justify-center">
         
         <div className="w-3/4 max-w-lg h-3 bg-zinc-200 border-x-4 border-t-4 border-zinc-300 rounded-t-lg shadow-sm z-0 shrink-0"></div>

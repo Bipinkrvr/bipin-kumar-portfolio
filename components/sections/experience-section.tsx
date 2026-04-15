@@ -4,7 +4,7 @@ import { Briefcase, Terminal } from "lucide-react";
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="w-full min-h-[100dvh] h-auto snap-center flex flex-col justify-center relative py-20 px-4 sm:px-8">
+    <section id="experience" className="w-full min-h-screen flex flex-col justify-center relative py-20 px-4 sm:px-8">
       <div className="flex items-center gap-3 mb-8 border-b border-zinc-200 pb-4 max-w-6xl mx-auto w-full">
         <Briefcase className="w-6 h-6 text-cyan-600" />
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-zinc-800 tracking-wider">

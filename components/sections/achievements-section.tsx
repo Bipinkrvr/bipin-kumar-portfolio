@@ -88,7 +88,7 @@ export function AchievementsSection() {
 
   return (
     // STRICT 100dvh SNAP - Overflow Hidden entirely removes any scrolling!
-    <section id="achievements" className="relative w-full h-[100dvh] min-h-[500px] snap-center flex flex-col justify-center px-4 pt-16 pb-4 overflow-hidden">
+    <section id="achievements" className="relative w-full min-h-screen flex flex-col justify-center px-4 py-20 overflow-hidden">
       <div className="max-w-5xl mx-auto relative z-10 w-full flex flex-col h-full min-h-0">
         
         <div className="flex items-center gap-3 mb-4 border-b border-zinc-200 pb-2 shrink-0">

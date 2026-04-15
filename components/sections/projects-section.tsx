@@ -65,7 +65,7 @@ export function ProjectsSection() {
 
   return (
     // Hard-locked height, no scrolling allowed.
-    <section id="projects" className="w-full h-[100dvh] max-h-[100dvh] snap-center flex flex-col items-center justify-center relative py-4 sm:py-8 px-2 sm:px-8 overflow-hidden bg-transparent">
+    <section id="projects" className="w-full min-h-screen flex flex-col items-center justify-center relative py-16 px-2 sm:px-8 bg-transparent">
       
       {/* Super Compact Header */}
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-end justify-between mb-2 border-b border-zinc-300 pb-1.5 gap-2 w-full shrink-0">
