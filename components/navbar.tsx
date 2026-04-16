@@ -57,7 +57,7 @@ export function NavBar() {
   const navLinks = [
     { name: "HOME", href: "#hero" },
     { name: "EXPERIENCE", href: "#experience" }, 
-    { name: "INTERNSHIP", href: "#internship" }, 
+    { name: "INTERNSHIPS", href: "#internships" }, 
     { name: "PROJECTS", href: "#projects" },
     { name: "SKILLS", href: "#skills" },   
     { name: "EDUCATION", href: "#education" }, 

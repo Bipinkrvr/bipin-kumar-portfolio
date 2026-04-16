@@ -1,4 +1,3 @@
-// app/project/[id]/page.tsx
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
@@ -23,43 +22,31 @@ const getYouTubeEmbedUrl = (url: string) => {
 // --- Wires Extended Off-Screen and Heavily Populated Right Side ---
 const CleanWireBackground = () => (
   <div className="fixed top-0 left-0 w-full h-[100svh] pointer-events-none z-0 overflow-hidden bg-[#f4f4f5]">
-    {/* Base Schematic Grid */}
     <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-
-    {/* VCC / POWER BUS (Amber) - Extended past right edge */}
+    {/* VCC / POWER BUS (Amber) */}
     <div className="absolute top-0 left-[8vw] w-[100vw] h-[15svh] border-b-[6px] border-l-[6px] border-amber-500 rounded-bl-[2rem]"></div>
     <div className="absolute top-0 left-[9.5vw] w-[100vw] h-[17svh] border-b-[6px] border-l-[6px] border-amber-500 rounded-bl-[2.2rem]"></div>
     <div className="absolute top-0 left-[11vw] w-[100vw] h-[19svh] border-b-[6px] border-l-[6px] border-amber-500 rounded-bl-[2.4rem]"></div>
     <div className="absolute top-[19svh] left-[11vw] w-4 h-4 rounded-full border-[5px] border-amber-500 bg-[#f4f4f5] shadow-inner translate-x-[-5px] translate-y-[-5px]"></div>
-
-    {/* DATA BUS (Blue) - Extended past bottom edge */}
+    {/* DATA BUS (Blue) */}
     <div className="absolute top-[30svh] left-0 w-[12vw] h-[80svh] border-t-[6px] border-r-[6px] border-blue-600 rounded-tr-[2rem]"></div>
     <div className="absolute top-[32svh] left-0 w-[13.5vw] h-[80svh] border-t-[6px] border-r-[6px] border-blue-600 rounded-tr-[2.2rem]"></div>
     <div className="absolute top-[34svh] left-0 w-[15vw] h-[80svh] border-t-[6px] border-r-[6px] border-blue-600 rounded-tr-[2.4rem]"></div>
     <div className="absolute top-[36svh] left-0 w-[16.5vw] h-[80svh] border-t-[6px] border-r-[6px] border-blue-600 rounded-tr-[2.6rem]"></div>
     <div className="absolute top-[36svh] left-[16.5vw] w-4 h-4 rounded-full border-[5px] border-blue-600 bg-[#f4f4f5] shadow-inner translate-x-[-5px] translate-y-[-5px]"></div>
-
-    {/* NEUTRAL / GROUND BUS (Zinc) - Extended past right edge using negative right spacing */}
+    {/* NEUTRAL / GROUND BUS (Zinc) */}
     <div className="absolute bottom-0 right-[-5vw] w-[45vw] h-[40svh] border-t-[6px] border-l-[6px] border-zinc-500 rounded-tl-[2rem]"></div>
     <div className="absolute bottom-0 right-[-5vw] w-[43.5vw] h-[42svh] border-t-[6px] border-l-[6px] border-zinc-500 rounded-tl-[2.2rem]"></div>
     <div className="absolute bottom-0 right-[-5vw] w-[42vw] h-[44svh] border-t-[6px] border-l-[6px] border-zinc-500 rounded-tl-[2.4rem]"></div>
-
-    {/* SENSOR BUS (Emerald) - Added more wires, extending past top and right edge */}
+    {/* SENSOR BUS (Emerald) */}
     <div className="absolute top-[-5svh] right-0 w-[15vw] h-[55svh] border-b-[4px] border-l-[4px] border-emerald-500 rounded-bl-[2rem]"></div>
     <div className="absolute top-[-5svh] right-0 w-[13.5vw] h-[53svh] border-b-[4px] border-l-[4px] border-emerald-500 rounded-bl-[1.8rem]"></div>
     <div className="absolute top-[-5svh] right-0 w-[12vw] h-[51svh] border-b-[4px] border-l-[4px] border-emerald-500 rounded-bl-[1.6rem]"></div>
     <div className="absolute top-[-5svh] right-0 w-[10.5vw] h-[49svh] border-b-[4px] border-l-[4px] border-emerald-500 rounded-bl-[1.4rem]"></div>
     <div className="absolute top-[49svh] right-[10.5vw] w-3 h-3 rounded-full border-[4px] border-emerald-500 bg-[#f4f4f5] shadow-inner translate-x-[-3.5px] translate-y-[-3.5px]"></div>
-
-    {/* NEW AUXILIARY BUS (Purple) - Filling out the middle-right space, extending past bottom edge */}
-    <div className="absolute bottom-[-5svh] right-0 w-[8vw] h-[35svh] border-t-[4px] border-l-[4px] border-purple-500 rounded-tl-[1.5rem]"></div>
-    <div className="absolute bottom-[-5svh] right-0 w-[6.5vw] h-[33svh] border-t-[4px] border-l-[4px] border-purple-500 rounded-tl-[1.3rem]"></div>
-    <div className="absolute bottom-[-5svh] right-0 w-[5vw] h-[31svh] border-t-[4px] border-l-[4px] border-purple-500 rounded-tl-[1.1rem]"></div>
-    <div className="absolute bottom-[26svh] right-[8vw] w-3 h-3 rounded-full border-[4px] border-purple-500 bg-[#f4f4f5] shadow-inner translate-x-[-3.5px] translate-y-[-3.5px]"></div>
   </div>
 );
 
-// Helper component for PCB mounting holes on panels
 const MountingHole = ({ className }: { className: string }) => (
   <div className={`absolute w-5 h-5 bg-zinc-200 rounded-full border-2 border-zinc-400 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] z-30 ${className}`}>
     <div className="w-3 h-[2px] bg-zinc-500 rotate-45"></div>
@@ -71,24 +58,28 @@ export default function SCADAProjectPage() {
   const router = useRouter();
   const id = typeof params.id === "string" ? params.id : "";
   
-  // Find the project based on the array structure, fallback to first project if not found
   const project = projectsData.find((p) => p.id === id) || projectsData[0];
   
   const [sysTime, setSysTime] = useState("");
   const [currentMedia, setCurrentMedia] = useState(0);
   const mediaContainerRef = useRef<HTMLDivElement>(null);
 
-  // Safe media checking
   const sortedMediaList = useMemo(() => {
-    // @ts-expect-error - Handling cases where media might not exist on the simplified object
-    const media: any[] = project.media || [];
-    return [...media].sort((a, b) => {
-      const aIsVideo = a.type === 'video' || a.type === 'youtube';
-      const bIsVideo = b.type === 'video' || b.type === 'youtube';
-      if (aIsVideo && !bIsVideo) return -1;
-      if (!aIsVideo && bIsVideo) return 1;
-      return 0;
-    });
+    const mediaList: { type: string, url: string }[] = [];
+    if (project.details?.media) {
+      if (project.details.media.video) {
+         const isYoutube = project.details.media.video.includes('youtube') || project.details.media.video.includes('youtu.be');
+         mediaList.push({ type: isYoutube ? 'youtube' : 'video', url: project.details.media.video });
+      }
+      if (Array.isArray(project.details.media.images)) {
+         project.details.media.images.forEach((imgUrl: string) => {
+           mediaList.push({ type: 'image', url: imgUrl });
+         });
+      }
+    } else if (Array.isArray((project as any).media)) {
+      return [...(project as any).media];
+    }
+    return mediaList;
   }, [project]);
 
   useEffect(() => {
@@ -110,10 +101,80 @@ export default function SCADAProjectPage() {
     }
   };
 
+  const displayTechStack = project.details?.techStack || project.tags;
+
+  // --- REUSABLE CONNECTIONS BLOCK FOR RESPONSIVE PLACEMENT ---
+  const renderExternalConnections = (className: string) => (
+    <div className={`bg-zinc-200 border-2 border-zinc-400 p-3 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.1)] ${className}`}>
+      <h3 className="text-[10px] sm:text-xs font-black tracking-widest text-zinc-600 mb-3 flex items-center gap-2">
+        <PlugZap className="w-3.5 h-3.5" /> EXTERNAL_CONNECTIONS
+      </h3>
+      
+      <div className="flex flex-col gap-3">
+        {/* @ts-expect-error fallback */}
+        {project.whitePaperLink && (
+          <Link 
+            /* @ts-expect-error fallback */
+            href={project.whitePaperLink} 
+            target="_blank"
+            className="w-full relative group bg-blue-700 hover:bg-blue-800 border-b-4 border-blue-900 p-4 flex items-center justify-center gap-3 transition-all active:translate-y-1 active:border-b-0 shadow-md rounded-sm"
+          >
+            <FileText className="w-5 h-5 text-white" />
+            <span className="text-xs sm:text-sm font-black tracking-widest text-white">
+              EXTRACT TECHNICAL DATASHEET
+            </span>
+          </Link>
+        )}
+
+        <div className="grid grid-cols-2 gap-3">
+          {project.github ? (
+            <Link 
+              href={project.github} 
+              target="_blank"
+              className="bg-white hover:bg-zinc-50 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 transition-all active:translate-y-1 active:border-b-0 shadow-sm rounded-sm"
+            >
+              <Github className="w-5 h-5 text-zinc-800" />
+              <span className="text-[10px] font-black tracking-widest text-zinc-700 mt-1">SOURCE.REPO</span>
+            </Link>
+          ) : (
+            <div className="bg-zinc-300 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 shadow-sm rounded-sm opacity-60 cursor-not-allowed">
+               <Github className="w-5 h-5 text-zinc-500" />
+               <span className="text-[10px] font-black tracking-widest text-zinc-500 mt-1">N/A</span>
+            </div>
+          )}
+
+          {project.live ? (
+            <Link 
+              href={project.live} 
+              target="_blank"
+              className="bg-white hover:bg-zinc-50 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 transition-all active:translate-y-1 active:border-b-0 shadow-sm rounded-sm"
+            >
+              <ExternalLink className="w-5 h-5 text-emerald-600" />
+              <span className="text-[10px] font-black tracking-widest text-zinc-700 mt-1">LIVE.DEPL</span>
+            </Link>
+          ) : project.linkedin ? (
+            <Link 
+              href={project.linkedin} 
+              target="_blank"
+              className="bg-white hover:bg-zinc-50 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 transition-all active:translate-y-1 active:border-b-0 shadow-sm rounded-sm"
+            >
+              <Linkedin className="w-5 h-5 text-blue-700" />
+              <span className="text-[10px] font-black tracking-widest text-zinc-700 mt-1">NET.LINKEDIN</span>
+            </Link>
+          ) : (
+            <div className="bg-zinc-300 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 shadow-sm rounded-sm opacity-60 cursor-not-allowed">
+               <ExternalLink className="w-5 h-5 text-zinc-500" />
+               <span className="text-[10px] font-black tracking-widest text-zinc-500 mt-1">N/A</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <main className="min-h-[100svh] bg-transparent text-zinc-900 font-mono select-none overflow-x-hidden pb-12 relative">
       
-      {/* PERFECT WIRE BACKGROUND COMPONENT */}
       <CleanWireBackground />
 
       {/* 1. TOP POWER RAIL */}
@@ -142,10 +203,9 @@ export default function SCADAProjectPage() {
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 relative z-10">
         
-        {/* 2. SCHEMATIC & MEDIA (LEFT COLUMN) */}
+        {/* 2. SCHEMATIC, MEDIA & LINKS (LEFT COLUMN) */}
         <div className="col-span-1 lg:col-span-7 flex flex-col gap-6">
           
-          {/* Title Block Panel */}
           <div className="bg-white border-2 border-zinc-400 p-5 sm:p-7 relative shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
             <div className="absolute top-0 right-12 w-0.5 h-4 bg-blue-600"></div>
             <div className="absolute top-4 right-10 w-4 h-0.5 bg-blue-600"></div>
@@ -157,8 +217,7 @@ export default function SCADAProjectPage() {
 
             <h2 className="text-[10px] sm:text-xs text-blue-700 font-black mb-1 tracking-[0.2em] flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-600 rounded-sm inline-block"></span>
-              {/* @ts-expect-error - fallback logic */}
-              {project.type || "ENGINEERING DEPLOYMENT"}
+              ENGINEERING DEPLOYMENT
             </h2>
             <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 uppercase tracking-tight mb-2">
               {project.title}
@@ -170,7 +229,6 @@ export default function SCADAProjectPage() {
             </div>
           </div>
 
-          {/* Mounted Display Component */}
           <div className="bg-zinc-300 p-2 sm:p-3 relative shadow-[0_10px_40px_rgba(0,0,0,0.1)] border-b-4 border-r-4 border-zinc-400">
             <MountingHole className="-top-2 -left-2" />
             <MountingHole className="-top-2 -right-2" />
@@ -233,7 +291,7 @@ export default function SCADAProjectPage() {
                       <img 
                         src={media.url} 
                         alt={`${project.title} media ${idx + 1}`} 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain bg-zinc-900"
                       />
                     )}
                   </div>
@@ -247,13 +305,13 @@ export default function SCADAProjectPage() {
                   <ChevronLeft className="w-5 h-5 text-zinc-700" />
                 </button>
                 
-                <div className="flex gap-1 items-center px-2 bg-zinc-200 p-1 border-2 border-zinc-400 rounded-sm shadow-inner">
-                  <span className="text-[8px] font-black tracking-widest text-zinc-500 mr-2">MUX SEL:</span>
+                <div className="flex gap-1 items-center px-2 bg-zinc-200 p-1 border-2 border-zinc-400 rounded-sm shadow-inner flex-wrap justify-center">
+                  <span className="text-[8px] font-black tracking-widest text-zinc-500 mr-1 sm:mr-2">MUX SEL:</span>
                   {sortedMediaList.map((_, idx) => (
                     <button 
                       key={idx}
                       onClick={() => setCurrentMedia(idx)}
-                      className={`w-6 h-6 flex items-center justify-center text-[10px] font-black border-2 transition-all ${
+                      className={`w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[9px] sm:text-[10px] font-black border-2 transition-all ${
                         idx === currentMedia 
                           ? "bg-amber-400 text-black border-amber-600 shadow-sm" 
                           : "bg-zinc-100 text-zinc-400 border-zinc-300 hover:bg-zinc-50"
@@ -270,119 +328,101 @@ export default function SCADAProjectPage() {
               </div>
             )}
           </div>
+
+          {/* HIDDEN ON MOBILE: Renders here on Desktop for Symmetry */}
+          {renderExternalConnections("hidden lg:block")}
+          
         </div>
 
         {/* 3. LOGIC & TERMINALS (RIGHT COLUMN) */}
         <div className="col-span-1 lg:col-span-5 flex flex-col gap-6">
           
-          <div className="bg-white border-2 border-zinc-400 flex-grow flex flex-col shadow-[0_8px_30px_rgba(0,0,0,0.05)] relative overflow-hidden">
-             <div className="h-8 w-full bg-[repeating-linear-gradient(45deg,#facc15,#facc15_10px,#000_10px,#000_20px)] border-b-2 border-zinc-400 flex items-center justify-center">
-                <span className="bg-black px-2 text-[10px] font-black text-yellow-400 tracking-widest">SYSTEM_ABSTRACT</span>
+          {/* --- SCROLL-FREE STRUCTURED ABSTRACT SECTION --- */}
+          <div className="bg-white border-2 border-zinc-400 flex flex-col shadow-[0_8px_30px_rgba(0,0,0,0.05)] relative overflow-hidden">
+             <div className="h-8 w-full bg-[repeating-linear-gradient(45deg,#facc15,#facc15_10px,#000_10px,#000_20px)] border-b-2 border-zinc-400 flex items-center justify-center shrink-0">
+                <span className="bg-black px-2 text-[10px] font-black text-yellow-400 tracking-widest">SYSTEM_ABSTRACT & LOGIC</span>
              </div>
              
-             <div className="p-4 sm:p-6 flex-grow flex flex-col">
-              {/* UPDATED: INCREASED SIZE AND CHANGED TO FONT-SANS FOR HR READABILITY */}
-              <p className="text-sm sm:text-base text-zinc-800 leading-relaxed font-sans flex-grow font-medium relative pl-4 border-l-2 border-blue-300">
-                <span className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-blue-500"></span>
-                {project.description}
-                <span className="animate-pulse ml-1 bg-blue-700 w-1.5 h-3 inline-block align-middle"></span>
-              </p>
-            </div>
+             <div className="p-4 sm:p-5 flex flex-col gap-5">
+                
+                {/* 1. Problem Statement (Red Accent) */}
+                {(project.details?.problem || project.description) && (
+                  <div className="relative pl-4 border-l-2 border-rose-400">
+                     <span className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-rose-500"></span>
+                     <h4 className="text-[10px] font-black text-rose-600 mb-1.5 tracking-widest">THE_PROBLEM</h4>
+                     <p className="text-sm text-zinc-800 leading-relaxed font-sans font-medium">
+                        {project.details?.problem || project.description}
+                     </p>
+                  </div>
+                )}
+
+                {/* 2. Solution (Blue Accent) */}
+                {project.details?.solution && (
+                  <div className="relative pl-4 border-l-2 border-blue-400">
+                     <span className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-blue-500"></span>
+                     <h4 className="text-[10px] font-black text-blue-600 mb-1.5 tracking-widest">THE_SOLUTION</h4>
+                     <p className="text-sm text-zinc-800 leading-relaxed font-sans font-medium">
+                        {project.details.solution}
+                     </p>
+                  </div>
+                )}
+
+                {/* 3. Key Features (Emerald Accent) */}
+                {project.details?.features && project.details.features.length > 0 && (
+                  <div className="relative pl-4 border-l-2 border-emerald-400">
+                     <span className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-emerald-500"></span>
+                     <h4 className="text-[10px] font-black text-emerald-600 mb-2 tracking-widest">KEY_FEATURES</h4>
+                     <ul className="flex flex-col gap-2">
+                       {project.details.features.map((feature, idx) => (
+                         <li key={idx} className="text-sm text-zinc-700 font-sans font-medium flex items-start gap-2">
+                           <span className="text-emerald-500 mt-[3px] text-[10px]">▶</span>
+                           <span className="leading-snug">{feature}</span>
+                         </li>
+                       ))}
+                     </ul>
+                  </div>
+                )}
+
+                {/* 4. Hardware Requirements (Amber Accent) */}
+                {project.details?.hardware && project.details.hardware.length > 0 && (
+                   <div className="relative pl-4 border-l-2 border-amber-400">
+                     <span className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-amber-500"></span>
+                     <h4 className="text-[10px] font-black text-amber-600 mb-2 tracking-widest">HARDWARE_SPECS</h4>
+                     <div className="flex flex-wrap gap-2">
+                        {project.details.hardware.map((hw, idx) => (
+                          <span key={idx} className="bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-black px-2 py-1 rounded-sm shadow-sm">
+                            {hw}
+                          </span>
+                        ))}
+                     </div>
+                   </div>
+                )}
+             </div>
           </div>
 
-          <div className="bg-white border-2 border-zinc-400 p-4 sm:p-6 shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
-            <div className="flex items-center gap-2 mb-4 border-b-2 border-zinc-800 pb-2">
+          {/* --- WIRING / TECH STACK SECTION --- */}
+          <div className="bg-white border-2 border-zinc-400 p-4 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
+            <div className="flex items-center gap-2 mb-3 border-b-2 border-zinc-800 pb-2">
               <Terminal className="w-4 h-4 text-zinc-800" />
               <h3 className="text-xs sm:text-sm font-black tracking-widest text-zinc-900">STACK_WIRING_LIST</h3>
             </div>
             
-            <div className="grid grid-cols-1 gap-2">
-              {/* Safely map tags to simulate hardware pins */}
-              {project.tags.map((tag, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {displayTechStack.map((tag, i) => (
                 <div key={tag} className="flex justify-between items-center bg-zinc-50 border border-zinc-200 p-2">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-zinc-800 text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm">PIN 0{i+1}</span>
-                    <span className="text-[10px] sm:text-xs text-zinc-600 font-bold">TECH_NODE</span>
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-black text-blue-700 text-right uppercase">{tag}</span>
+                  <span className="bg-zinc-800 text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm shrink-0">
+                    PIN 0{i+1}
+                  </span>
+                  <span className="text-[9px] sm:text-[10px] font-black text-blue-700 text-right uppercase ml-2 truncate">
+                    {tag}
+                  </span>
                 </div>
               ))}
             </div>
-            
-            <div className="mt-4 flex flex-col items-center justify-center text-zinc-400">
-              <div className="w-px h-3 bg-zinc-400"></div>
-              <div className="w-4 h-px bg-zinc-400 mb-[2px]"></div>
-              <div className="w-2 h-px bg-zinc-400 mb-[2px]"></div>
-              <div className="w-1 h-px bg-zinc-400"></div>
-            </div>
           </div>
 
-          <div className="bg-zinc-200 border-2 border-zinc-400 p-3 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.1)]">
-            <h3 className="text-[10px] sm:text-xs font-black tracking-widest text-zinc-600 mb-3 flex items-center gap-2">
-              <PlugZap className="w-3.5 h-3.5" /> EXTERNAL_CONNECTIONS
-            </h3>
-            
-            <div className="flex flex-col gap-3">
-              {/* @ts-expect-error fallback */}
-              {project.whitePaperLink && (
-                <Link 
-                  /* @ts-expect-error fallback */
-                  href={project.whitePaperLink} 
-                  target="_blank"
-                  className="w-full relative group bg-blue-700 hover:bg-blue-800 border-b-4 border-blue-900 p-4 flex items-center justify-center gap-3 transition-all active:translate-y-1 active:border-b-0 shadow-md rounded-sm"
-                >
-                  <FileText className="w-5 h-5 text-white" />
-                  <span className="text-xs sm:text-sm font-black tracking-widest text-white">
-                    EXTRACT TECHNICAL DATASHEET
-                  </span>
-                </Link>
-              )}
-
-              <div className="grid grid-cols-2 gap-3">
-                {project.github ? (
-                  <Link 
-                    href={project.github} 
-                    target="_blank"
-                    className="bg-white hover:bg-zinc-50 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 transition-all active:translate-y-1 active:border-b-0 shadow-sm rounded-sm"
-                  >
-                    <Github className="w-5 h-5 text-zinc-800" />
-                    <span className="text-[10px] font-black tracking-widest text-zinc-700 mt-1">SOURCE.REPO</span>
-                  </Link>
-                ) : (
-                  <div className="bg-zinc-300 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 shadow-sm rounded-sm opacity-60 cursor-not-allowed">
-                     <Github className="w-5 h-5 text-zinc-500" />
-                     <span className="text-[10px] font-black tracking-widest text-zinc-500 mt-1">N/A</span>
-                  </div>
-                )}
-
-                {/* Modified to handle live links OR linkedin links dynamically */}
-                {project.live ? (
-                  <Link 
-                    href={project.live} 
-                    target="_blank"
-                    className="bg-white hover:bg-zinc-50 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 transition-all active:translate-y-1 active:border-b-0 shadow-sm rounded-sm"
-                  >
-                    <ExternalLink className="w-5 h-5 text-emerald-600" />
-                    <span className="text-[10px] font-black tracking-widest text-zinc-700 mt-1">LIVE.DEPL</span>
-                  </Link>
-                ) : project.linkedin ? (
-                  <Link 
-                    href={project.linkedin} 
-                    target="_blank"
-                    className="bg-white hover:bg-zinc-50 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 transition-all active:translate-y-1 active:border-b-0 shadow-sm rounded-sm"
-                  >
-                    <Linkedin className="w-5 h-5 text-blue-700" />
-                    <span className="text-[10px] font-black tracking-widest text-zinc-700 mt-1">NET.LINKEDIN</span>
-                  </Link>
-                ) : (
-                  <div className="bg-zinc-300 border-b-4 border-zinc-400 p-3 flex flex-col items-center justify-center gap-1 shadow-sm rounded-sm opacity-60 cursor-not-allowed">
-                     <ExternalLink className="w-5 h-5 text-zinc-500" />
-                     <span className="text-[10px] font-black tracking-widest text-zinc-500 mt-1">N/A</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          {/* HIDDEN ON DESKTOP: Renders here at the absolute bottom for Mobile */}
+          {renderExternalConnections("block lg:hidden")}
 
         </div>
       </div>
