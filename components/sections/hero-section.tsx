@@ -9,7 +9,8 @@ export function HeroSection() {
   const [isStable, setIsStable] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsStable(true), 1500);
+    // Reduced calibrating time from 1500ms to 600ms for a snappier boot sequence
+    const timer = setTimeout(() => setIsStable(true), 600);
     return () => clearTimeout(timer);
   }, []);
 
@@ -23,35 +24,31 @@ export function HeroSection() {
            
            {/* DC Power Supply Box */}
            <div className="w-14 h-16 lg:w-16 lg:h-16 bg-zinc-100 border-2 border-zinc-300 rounded-md flex flex-col items-center justify-center relative z-20 shadow-[inset_0_0_10px_rgba(0,0,0,0.05),-5px_5px_15px_rgba(0,0,0,0.1)]">
-              {/* DC Rating Label */}
               <div className="flex flex-col items-center justify-center mb-1">
                  <span className="font-mono text-[16px] lg:text-[18px] font-black text-zinc-400 leading-none">DC</span>
                  <span className="font-mono text-[7px] lg:text-[8px] font-bold text-zinc-500 mt-0.5 tracking-wider">24V 5A</span>
               </div>
-              {/* Power Indicator */}
               <div className="absolute bottom-1 lg:bottom-1.5 flex items-center gap-1">
-                <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${isStable ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]' : 'bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.8)] animate-pulse'}`}></div>
+                <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isStable ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]' : 'bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.8)] animate-pulse'}`}></div>
                 <span className={`text-[4px] lg:text-[5px] font-mono font-bold ${isStable ? 'text-zinc-500' : 'text-red-500'}`}>
                    {isStable ? '24V' : 'BOOT'}
                 </span>
               </div>
            </div>
 
-           {/* Plug (Sinks into the socket via translate-x) */}
+           {/* Plug */}
            <div className="w-6 h-8 lg:w-8 lg:h-10 bg-zinc-300 border-2 border-zinc-400 border-l-0 rounded-r-md flex flex-col items-start justify-center pl-1 shadow-md relative z-10 translate-x-[-4px]">
-              {/* Grip Lines */}
               <div className="w-[1px] h-3 lg:h-4 bg-zinc-500 mb-[2px]"></div>
               <div className="w-[1px] h-3 lg:h-4 bg-zinc-500 mb-[2px]"></div>
               <div className="w-[1px] h-3 lg:h-4 bg-zinc-500"></div>
            </div>
 
-           {/* Wire going to chassis back (Negative margin-left ensures it penetrates the plug) */}
+           {/* Wire */}
            <svg width="45" height="20" viewBox="0 0 45 20" className="opacity-90 -ml-[6px]">
               <path d="M 0 10 L 45 10" fill="none" stroke="#27272a" strokeWidth="6" />
               <path d="M 0 10 L 45 10" fill="none" stroke="#52525b" strokeWidth="2" />
            </svg>
         </div>
-
 
         {/* Top DIN Rail */}
         <div aria-hidden="true" className="w-[90%] mx-auto h-3 sm:h-4 bg-zinc-300 border-x-4 border-t-4 border-zinc-400 rounded-t-lg flex justify-between items-center px-4 sm:px-12 shadow-sm shrink-0 z-0">
@@ -77,7 +74,8 @@ export function HeroSection() {
                 </h1>
                 <div className="mt-2 sm:mt-1 flex items-center gap-2 relative z-20 max-w-xl mx-auto w-full px-2">
                    <div className="h-1 flex-grow bg-zinc-200 border border-zinc-300 overflow-hidden">
-                      <div className={`h-full transition-all duration-[1500ms] ease-out ${isStable ? 'bg-cyan-500 w-full shadow-[0_0_8px_rgba(34,211,238,0.5)]' : 'bg-amber-400 w-[20%]'}`}></div>
+                      {/* Reduced animation duration here from 1500ms to 800ms */}
+                      <div className={`h-full transition-all duration-[800ms] ease-out ${isStable ? 'bg-cyan-500 w-full shadow-[0_0_8px_rgba(34,211,238,0.5)]' : 'bg-amber-400 w-[20%]'}`}></div>
                    </div>
                    <span className={`font-mono text-[8px] sm:text-[9px] md:text-[10px] uppercase transition-colors duration-300 min-w-[90px] sm:min-w-[120px] text-right shrink-0 whitespace-nowrap ${isStable ? 'text-cyan-600' : 'text-amber-500 animate-pulse'}`}>
                       {isStable ? 'LOGIC_LOCKED' : 'CALIBRATING...'}
@@ -122,11 +120,11 @@ export function HeroSection() {
 
                   <div className="relative w-full h-full bg-zinc-900 overflow-hidden">
                     <Image 
-                      src="/placeholder-user.jpg" 
-                      alt="Bipin Kumar" 
+                      src="/profile.jpg" 
+                      alt="Bipin Kumar, Electrical Engineer and Founder of VyaparLens" 
                       fill
                       priority
-                      className={`object-cover object-center transition-all duration-1000 ease-in-out
+                      className={`object-cover object-center transition-all duration-700 ease-in-out
                         ${isStable ? 'opacity-100 grayscale-0 brightness-110 blur-0' : 'opacity-40 grayscale brightness-75 blur-[2px]'}
                       `}
                     />
@@ -174,14 +172,14 @@ export function HeroSection() {
                   <span className="font-mono text-[7px] sm:text-[8px] text-zinc-600 font-bold tracking-widest truncate">SYSTEM_LOG</span>
                 </div>
                 
-                <div className="p-2 sm:p-3 font-mono text-[8px] sm:text-[11px] text-zinc-600 space-y-1.5 sm:space-y-2 lg:space-y-3 leading-relaxed overflow-y-auto custom-scrollbar flex-grow">
+                <div className="p-2 sm:p-3 font-mono text-[8px] sm:text-[11px] text-zinc-600 space-y-2 lg:space-y-4 leading-relaxed overflow-y-auto custom-scrollbar flex-grow">
                   <div>
                     <span className="text-emerald-500">{">"}</span> <strong className="text-zinc-900">ID:</strong>
-                    <p className="pl-2 mt-0.5">3rd-Year EE Node @ BIT Sindri.</p>
+                    <p className="pl-2 mt-0.5">6th-Semester EE Student @ BIT Sindri & Founder of VyaparLens.</p>
                   </div>
                   <div>
                     <span className="text-emerald-500">{">"}</span> <strong className="text-zinc-900">CORE:</strong>
-                    <p className="pl-2 mt-0.5">Bridging high-voltage hardware with digital architecture.</p>
+                    <p className="pl-2 mt-0.5">Bridging hardware with scalable software. I leverage AI as a primary development tool to rapidly architect, write, and deploy production-ready applications.</p>
                   </div>
                 </div>
               </div>
@@ -197,15 +195,15 @@ export function HeroSection() {
                   <div className="flex flex-col gap-1.5 sm:gap-2 flex-grow justify-around overflow-y-auto custom-scrollbar pr-1">
                     <div className="flex flex-col border-b border-zinc-100 pb-0.5 sm:pb-1">
                       <span className="font-mono text-[6px] sm:text-[8px] text-zinc-400 mb-[1px]">ROLE</span>
-                      <span className="font-mono text-[7px] sm:text-[10px] text-zinc-700 font-bold tracking-wide">E_ENGINEER</span>
+                      <span className="font-mono text-[7px] sm:text-[10px] text-zinc-700 font-bold tracking-wide">ELECTRICAL_ENG</span>
                     </div>
                     <div className="flex flex-col border-b border-zinc-100 pb-0.5 sm:pb-1">
-                      <span className="font-mono text-[6px] sm:text-[8px] text-zinc-400 mb-[1px]">STACK</span>
-                      <span className="font-mono text-[7px] sm:text-[10px] text-cyan-600 font-bold tracking-wide">FULL_STACK</span>
+                      <span className="font-mono text-[6px] sm:text-[8px] text-zinc-400 mb-[1px]">FOCUS</span>
+                      <span className="font-mono text-[7px] sm:text-[10px] text-cyan-600 font-bold tracking-wide">IoT & STARTUPS</span>
                     </div>
                     <div className="flex flex-col border-b border-zinc-100 pb-0.5 sm:pb-1 flex">
-                      <span className="font-mono text-[6px] sm:text-[8px] text-zinc-400 mb-[1px]">DOMAIN</span>
-                      <span className="font-mono text-[7px] sm:text-[10px] text-amber-500 font-bold tracking-wide">IoT_SPEC</span>
+                      <span className="font-mono text-[6px] sm:text-[8px] text-zinc-400 mb-[1px]">DEV_APPROACH</span>
+                      <span className="font-mono text-[7px] sm:text-[10px] text-amber-500 font-bold tracking-wide">AI_ASSISTED</span>
                     </div>
                     <div className="flex items-center justify-between mt-0.5 sm:mt-1">
                       <span className="font-mono text-[6px] sm:text-[8px] text-zinc-400">NET_I/O</span>
@@ -219,10 +217,10 @@ export function HeroSection() {
                 {/* Action Ports */}
                 <div className="flex flex-col gap-1.5 shrink-0">
                   <Link href="#projects" className="flex items-center justify-center gap-1.5 bg-cyan-600 hover:bg-cyan-500 text-white font-mono text-[7px] sm:text-[10px] font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-sm transition-all duration-300 shadow-md">
-                    <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> INIT_NODE
+                    <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> VIEW_PROJECTS
                   </Link>
                   <Link href="/resume.pdf" target="_blank" className="flex items-center justify-center gap-1.5 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-600 font-mono text-[7px] sm:text-[10px] font-bold px-2 sm:px-3 py-1.5 sm:py-2 rounded-sm transition-all duration-300 shadow-sm">
-                    <Database className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> RECORDS
+                    <Database className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> DOWNLOAD_RESUME
                   </Link>
                 </div>
               </div>
@@ -238,30 +236,24 @@ export function HeroSection() {
 
         {/* MOBILE POWER ASSEMBLY (Hidden on Desktop) */}
         <div className="flex sm:hidden flex-col items-center mt-[-4px] relative z-[-1] shrink-0">
-           {/* SVG Vertical Wire (Negative margin-bottom ensures it penetrates the plug) */}
            <svg width="20" height="35" viewBox="0 0 20 35" className="opacity-90 -mb-[6px]">
               <path d="M 10 0 L 10 35" fill="none" stroke="#27272a" strokeWidth="6" />
               <path d="M 10 0 L 10 35" fill="none" stroke="#52525b" strokeWidth="2" />
            </svg>
            
-           {/* Plug (Sinks into the socket via translate-y) */}
            <div className="w-8 h-6 bg-zinc-300 border-2 border-zinc-400 border-b-0 rounded-t-md flex flex-col items-center justify-start pt-[3px] shadow-md relative z-10 translate-y-[4px]">
-              {/* Grip lines */}
               <div className="w-4 h-[1px] bg-zinc-500 mb-[2px]"></div>
               <div className="w-4 h-[1px] bg-zinc-500 mb-[2px]"></div>
               <div className="w-4 h-[1px] bg-zinc-500"></div>
            </div>
            
-           {/* DC Power Supply Box */}
            <div className="w-16 h-16 bg-zinc-100 border-2 border-zinc-300 rounded-md shadow-inner flex flex-col items-center justify-center relative z-20">
-              {/* DC Rating Label */}
               <div className="flex flex-col items-center justify-center mb-1">
                  <span className="font-mono text-[16px] font-black text-zinc-400 leading-none">DC</span>
                  <span className="font-mono text-[7px] font-bold text-zinc-500 mt-0.5 tracking-wider">24V 5A</span>
               </div>
-              {/* Dynamic Power Indicator */}
               <div className="absolute bottom-1.5 flex items-center gap-1">
-                <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${isStable ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]' : 'bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.8)] animate-pulse'}`}></div>
+                <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isStable ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]' : 'bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.8)] animate-pulse'}`}></div>
                 <span className={`text-[5px] font-mono font-bold ${isStable ? 'text-zinc-500' : 'text-red-500'}`}>
                    {isStable ? '24V' : 'BOOT'}
                 </span>

@@ -83,19 +83,19 @@ export function EducationSection() {
   const education = [
     {
       title: "B.Tech // Electrical", institution: "BIT Sindri", timeline: "2023 - 2027", status: "DISCHARGING: 75%", chargeHeight: "h-[75%]",
-      description: "6th Semester. Bridging hardware physics with scalable software architecture.", modules: ["Power Electronics", "Control Systems"], icon: Cpu,
+      description: "6th Semester. Integrating hardware engineering with modern IoT and AI-assisted scalable software architecture.", modules: ["IoT Systems", "AI-Assisted Dev"], icon: Cpu,
       active: { border: "border-cyan-400", shadow: "shadow-[0_10px_30px_rgba(6,182,212,0.15)]", badge: "border-cyan-300 text-cyan-700 bg-white", energyFill: "bg-cyan-200", text: "text-cyan-600", termBg: "bg-white", termBorder: "border-zinc-200" },
       inactive: { border: "border-zinc-200", shadow: "shadow-sm", badge: "border-zinc-200 text-zinc-500 bg-white", energyFill: "bg-zinc-100/50", text: "text-zinc-400", termBg: "bg-zinc-200", termBorder: "border-zinc-300" }
     },
     {
-      title: "Senior Secondary", institution: "Your School Name", timeline: "2021 - 2023", status: "CAPACITY: 100%", chargeHeight: "h-[100%]",
-      description: "Core processing focus on Physics, Chemistry, and Mathematics (PCM).", modules: ["Physics", "Calculus"], icon: Database,
+      title: "Senior Secondary", institution: "BNS DAV Public School, Giridih", timeline: "2020 - 2022", status: "CAPACITY: 100%", chargeHeight: "h-[100%]",
+      description: "CBSE Board. Core processing focus on Physics, Chemistry, and Mathematics (PCM).", modules: ["Score: 86%", "PCM"], icon: Database,
       active: { border: "border-emerald-400", shadow: "shadow-[0_10px_30px_rgba(16,185,129,0.15)]", badge: "border-emerald-300 text-emerald-700 bg-white", energyFill: "bg-emerald-200", text: "text-emerald-600", termBg: "bg-white", termBorder: "border-zinc-200" },
       inactive: { border: "border-zinc-200", shadow: "shadow-sm", badge: "border-zinc-200 text-zinc-500 bg-white", energyFill: "bg-zinc-100/50", text: "text-zinc-400", termBg: "bg-zinc-200", termBorder: "border-zinc-300" }
     },
     {
-      title: "Secondary", institution: "Your School Name", timeline: "2019 - 2021", status: "CAPACITY: 100%", chargeHeight: "h-[100%]",
-      description: "System initialization sequence. Foundational sciences and math reasoning.", modules: ["Mathematics", "Logic Foundation"], icon: HardDrive,
+      title: "Secondary", institution: "BNS DAV Public School, Giridih", timeline: "2018 - 2020", status: "CAPACITY: 100%", chargeHeight: "h-[100%]",
+      description: "CBSE Board. System initialization sequence. Foundational sciences and math reasoning.", modules: ["Score: 88%", "Science & Math"], icon: HardDrive,
       active: { border: "border-amber-400", shadow: "shadow-[0_10px_30px_rgba(245,158,11,0.15)]", badge: "border-amber-300 text-amber-700 bg-white", energyFill: "bg-amber-200", text: "text-amber-600", termBg: "bg-white", termBorder: "border-zinc-200" },
       inactive: { border: "border-zinc-200", shadow: "shadow-sm", badge: "border-zinc-200 text-zinc-500 bg-white", energyFill: "bg-zinc-100/50", text: "text-zinc-400", termBg: "bg-zinc-200", termBorder: "border-zinc-300" }
     }
@@ -107,7 +107,7 @@ export function EducationSection() {
       <div className="flex items-center gap-3 mb-6 sm:mb-10 border-b border-zinc-200 pb-3 shrink-0 px-6 sm:px-12 max-w-6xl mx-auto w-full">
         <Zap className="w-6 h-6 text-cyan-600" />
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-zinc-800 tracking-wider">
-          [CORE_ARCHITECTURE]
+          [EDUCATION]
         </h2>
       </div>
 

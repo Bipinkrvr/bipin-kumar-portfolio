@@ -53,14 +53,16 @@ export function NavBar() {
     }
   };
 
+  // 1 & 2. Simplified Nav Links & Added Internship
   const navLinks = [
-    { name: "INIT", href: "#hero" },
-    { name: "EXP_LOG", href: "#experience" }, 
-    { name: "DEPLOYMENTS", href: "#projects" },
-    { name: "SUBSYSTEMS", href: "#skills" },   
-    { name: "TRAINING", href: "#education" }, 
-    { name: "CAPABILITIES", href: "#achievements" },
-    { name: "UPLINK", href: "#contact" }, 
+    { name: "HOME", href: "#hero" },
+    { name: "EXPERIENCE", href: "#experience" }, 
+    { name: "INTERNSHIP", href: "#internship" }, 
+    { name: "PROJECTS", href: "#projects" },
+    { name: "SKILLS", href: "#skills" },   
+    { name: "EDUCATION", href: "#education" }, 
+    { name: "ACHIEVEMENTS", href: "#achievements" },
+    { name: "CONTACT", href: "#contact" }, 
   ];
 
   return (
@@ -90,7 +92,7 @@ export function NavBar() {
         <div className="max-w-7xl mx-auto px-4 md:px-16 lg:px-24">
           <div className="flex items-center justify-between relative z-10">
             
-            {/* Left Module: SYS_MASTER IC Chip */}
+            {/* 3. Updated Branding for Left Module */}
             <Link 
               href="#hero" 
               onClick={(e) => scrollToSection(e, "#hero")} 
@@ -104,8 +106,8 @@ export function NavBar() {
                 <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
               </div>
               <div className="flex flex-col pr-2">
-                <span className="font-mono text-[9px] sm:text-[10px] font-black text-zinc-300 tracking-widest leading-none group-hover:text-white transition-colors">SYS_MASTER</span>
-                <span className="font-mono text-[6px] sm:text-[7px] text-zinc-500 tracking-[0.1em] mt-0.5 leading-none">NODE: BIPIN_K</span>
+                <span className="font-mono text-[9px] sm:text-[10px] font-black text-zinc-300 tracking-widest leading-none group-hover:text-white transition-colors">BIPIN KUMAR</span>
+                <span className="font-mono text-[6px] sm:text-[7px] text-zinc-500 tracking-[0.1em] mt-0.5 leading-none">EE @ BIT SINDRI</span>
               </div>
             </Link>
 
@@ -184,11 +186,12 @@ export function NavBar() {
 
           <div className="flex flex-col gap-5 h-full relative z-10 w-full max-w-sm mx-auto">
             
+            {/* 4. Simplified Mobile Menu Header */}
             <div className="bg-zinc-900 border-2 border-zinc-700 px-3 py-2 rounded-sm shadow-[0_4px_10px_rgba(0,0,0,0.3)] relative w-max mx-auto">
               {renderPins(2, "top")}
               {renderPins(2, "bottom")}
               <div className="font-mono text-[9px] text-zinc-400 tracking-widest flex items-center justify-center gap-2">
-                <Network className="w-3.5 h-3.5 text-emerald-500" /> SYS_NAV_ROUTING
+                <Network className="w-3.5 h-3.5 text-emerald-500" /> NAVIGATION
               </div>
             </div>
             
@@ -214,7 +217,7 @@ export function NavBar() {
                   <div className="w-2 h-2 rounded-full bg-zinc-700 group-active:bg-emerald-500 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] transition-colors"></div>
                   <span className="font-mono text-sm text-zinc-300 font-bold tracking-wider group-active:text-white transition-colors">{link.name}</span>
                 </div>
-                <span className="font-mono text-[8px] text-zinc-600">CH_{navLinks.indexOf(link)}</span>
+                <span className="font-mono text-[8px] text-zinc-600">0{navLinks.indexOf(link) + 1}</span>
               </button>
             ))}
           </div>

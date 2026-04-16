@@ -8,27 +8,27 @@ import { Cpu, Network } from "lucide-react";
 const internshipData = [
   {
     id: "SYS_02",
-    role: "Front-End Developer Intern",
-    company: "Sylvan",
-    timeline: "OCT_2025 - FEB_2026",
-    tech: ["React", "UI/UX", "Deployment"],
+    role: "Vocational Trainee",
+    company: "JBVNL",
+    timeline: "JUL_2025",
+    tech: ["Transformers", "Relay Testing", "Metering"],
     details: [
-      "Collaborated via MS Teams for deployment.",
-      "Developed highly responsive UI pages.",
-      "Implemented standardized UI designs."
+      "Trained at Transformer Repair Workshop (TRW).",
+      "Gained hands-on experience in Metering & Relay Testing.",
+      "Completed intensive 4-week core electrical training."
     ],
     theme: "cyan"
   },
   {
     id: "SYS_01",
-    role: "Software Engineering Intern",
-    company: "Glynac Analytics",
-    timeline: "JUN_2025 - AUG_2025",
-    tech: ["Next.js 15", "Recharts", "Tailwind"],
+    role: "VLSI Intern",
+    company: "CodTech IT Solutions",
+    timeline: "JUN_2024 - JUL_2024",
+    tech: ["VLSI Design", "Hardware", "Remote"],
     details: [
-      "Reduced dashboard latency by 20%.",
-      "Integrated Recharts for telemetry.",
-      "Engineered wealth management components."
+      "Completed intensive 4-week remote VLSI program.",
+      "Gained hands-on knowledge in VLSI architecture.",
+      "Executed and delivered core hardware design tasks."
     ],
     theme: "emerald"
   }
@@ -42,7 +42,7 @@ function ControlLoopInternship({ data }: { data: typeof internshipData[0] }) {
   const activeColor = isCyan ? 'cyan' : 'emerald';
   const wireBg = isActive ? (isCyan ? 'bg-cyan-500 shadow-[0_0_8px_#06b6d4]' : 'bg-emerald-500 shadow-[0_0_8px_#10b981]') : 'bg-zinc-300';
   const nodeBorder = isActive ? (isCyan ? 'border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.15)]' : 'border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.15)]') : 'border-zinc-300';
-  const textActive = isActive ? (isCyan ? 'text-cyan-600' : 'text-emerald-600') : 'text-zinc-400';
+  const textActive = isActive ? (isCyan ? 'text-cyan-600' : 'textemerald-600') : 'text-zinc-400';
   const textNormal = isActive ? 'text-zinc-800' : 'text-zinc-400';
   const takeoffBg = isActive ? (isCyan ? 'bg-cyan-500' : 'bg-emerald-500') : 'bg-zinc-400';
   
@@ -292,7 +292,7 @@ export function InternshipSection() {
       <div className="flex items-center gap-3 mb-4 sm:mb-8 border-b border-zinc-200 pb-3 max-w-6xl mx-auto w-full">
         <Network className="w-6 h-6 text-cyan-600" />
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-zinc-800 tracking-wider">
-          [CONTROL_SYSTEMS_LOG]
+          [INTERNSHIPS]
         </h2>
       </div>
 
