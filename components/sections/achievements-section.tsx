@@ -16,24 +16,28 @@ function LogicGateCard({
   description: string, 
   tags: string[]
 }) {
-  // Separate states for desktop hover and mobile tap
+  // Advanced state logic for multi-modal interactions
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
 
-  // The circuit conducts if either interacted with
-  const isActive = isHovered || isToggled;
+  // The circuit conducts if hovered, touched (scrolling), or explicitly toggled (tapped)
+  const isActive = isHovered || isTouched || isToggled;
 
   return (
     <div 
-      className="relative w-full h-full min-h-0 flex flex-col cursor-pointer sm:cursor-default"
+      className="relative w-full flex flex-col cursor-pointer sm:cursor-default"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => setIsToggled(!isToggled)} // Tap to toggle on mobile
+      onTouchStart={() => setIsTouched(true)}
+      onTouchEnd={() => setIsTouched(false)}
+      onTouchCancel={() => setIsTouched(false)}
+      onClick={() => setIsToggled(!isToggled)} // Tap to permanently toggle
     >
-      <Card className={`bg-white border-2 transition-all duration-500 rounded-xl overflow-hidden flex flex-col h-full min-h-0 ${isActive ? 'border-emerald-400 shadow-[0_10px_30px_rgba(16,185,129,0.15)]' : 'border-zinc-200 shadow-sm'}`}>
+      <Card className={`bg-white border-2 transition-all duration-500 rounded-xl overflow-visible flex flex-col h-full ${isActive ? 'border-emerald-400 shadow-[0_10px_30px_rgba(16,185,129,0.15)]' : 'border-zinc-200 shadow-sm'}`}>
         
-        {/* Logic Gate SVG - Reduced to scale-50 on mobile for a smaller footprint */}
-        <div className="absolute -top-4 right-4 bg-white px-2 z-10 flex items-center border border-zinc-200 rounded shadow-sm py-1 scale-50 sm:scale-100 origin-top-right transition-transform">
+        {/* Logic Gate SVG - Centered on top border and scaled slightly on mobile to prevent overlap */}
+        <div className="absolute top-0 right-4 sm:right-6 -translate-y-1/2 bg-white px-2 z-10 flex items-center scale-[0.75] sm:scale-100 origin-center transition-transform">
           <svg width="60" height="30" viewBox="0 0 75 40" className="overflow-visible">
             {/* Input 0/1 Top */}
             <text x="-5" y="15" className={`text-[10px] font-mono transition-all duration-500 ${isActive ? 'opacity-0 fill-cyan-500' : 'opacity-100 fill-zinc-400'}`}>0</text>
@@ -58,21 +62,21 @@ function LogicGateCard({
           </svg>
         </div>
 
-        <CardHeader className="pt-4 sm:pt-6 pb-1 px-4 sm:px-5 shrink-0">
-          <div className="font-mono text-[8px] sm:text-[9px] text-emerald-600 tracking-widest mb-0.5">{subtitle}</div>
-          <CardTitle className={`text-sm sm:text-lg font-mono transition-colors duration-300 uppercase leading-tight line-clamp-1 ${isActive ? 'text-emerald-600' : 'text-zinc-800'}`}>
+        <CardHeader className="pt-6 sm:pt-8 pb-2 px-5 sm:px-6 shrink-0">
+          <div className="font-mono text-[9px] sm:text-[10px] text-emerald-600 tracking-widest mb-1">{subtitle}</div>
+          <CardTitle className={`text-base sm:text-lg font-mono transition-colors duration-300 uppercase leading-tight ${isActive ? 'text-emerald-600' : 'text-zinc-800'}`}>
             {title}
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="flex flex-col flex-grow min-h-0 gap-2 pb-3 px-4 sm:px-5">
-          <p className="text-[10px] sm:text-xs font-mono text-zinc-600 leading-snug sm:leading-relaxed overflow-hidden text-ellipsis line-clamp-2">
+        <CardContent className="flex flex-col flex-grow gap-3 pb-5 px-5 sm:px-6">
+          <p className="text-[11px] sm:text-sm font-mono text-zinc-600 leading-relaxed">
             {description}
           </p>
           
-          <div className="flex flex-wrap gap-1 mt-auto pt-2 border-t border-zinc-100 shrink-0">
+          <div className="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-zinc-100 shrink-0">
             {tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className={`bg-zinc-50 border font-mono text-[8px] sm:text-[9px] px-1 py-0 transition-colors ${isActive ? 'border-emerald-300 text-emerald-700' : 'border-zinc-200 text-zinc-600'}`}>
+              <Badge key={tag} variant="secondary" className={`bg-zinc-50 border font-mono text-[9px] sm:text-[10px] px-1.5 py-0 transition-colors ${isActive ? 'border-emerald-300 text-emerald-700' : 'border-zinc-200 text-zinc-600'}`}>
                 {tag}
               </Badge>
             ))}
@@ -112,18 +116,19 @@ export function AchievementsSection() {
   ];
 
   return (
-    // STRICT 100dvh SNAP - Removed top padding (pt-0)
-    <section id="achievements" className="relative w-full min-h-screen flex flex-col justify-center px-4 pt-0 pb-20 overflow-hidden">
-      <div className="max-w-5xl mx-auto relative z-10 w-full flex flex-col h-full min-h-0">
+    // Cleaned up section padding, removed min-h-screen logic that causes scroll jerks
+    <section id="achievements" className="relative w-full flex flex-col justify-center px-4 sm:px-8 py-8 sm:py-16 bg-transparent overflow-visible">
+      <div className="max-w-6xl mx-auto w-full flex flex-col">
         
-        <div className="flex items-center gap-3 mb-4 border-b border-zinc-200 pb-2 shrink-0">
+        <div className="flex items-center gap-3 mb-8 border-b border-zinc-200 pb-4 shrink-0 w-full">
           <ShieldCheck className="w-6 h-6 text-emerald-600" />
           <h2 className="text-xl sm:text-2xl font-mono font-bold text-zinc-800 tracking-wider">
             [CAPABILITY_LOG]
           </h2>
         </div>
 
-        <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 sm:gap-y-5 h-full min-h-0 pb-2">
+        {/* Increased gap-y-8 on mobile to ensure logic gates don't overlap upper cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 sm:gap-y-8 w-full">
           {achievements.map((item, index) => (
             <LogicGateCard 
               key={index}
