@@ -207,8 +207,9 @@ export function Footer() {
       {/* 3. PLASTIC ENGRAVING (COPYRIGHT)          */}
       {/* ========================================= */}
       <div className="absolute bottom-2 left-0 right-0 w-full flex justify-center z-30 pointer-events-none">
-        <p className="font-mono text-[8px] text-zinc-500/90 font-bold tracking-[0.25em] mix-blend-multiply text-center">
-          © {currentYear} BIPIN_KUMAR • HARDWARE_ENGINEER
+        {/* CHANGED THIS LINE: Now text-black, font-black, slightly larger, removed mix-blend */}
+        <p className="font-mono text-[9px] sm:text-[10px] text-black font-black tracking-[0.2em] text-center uppercase">
+          © {currentYear} Bipin Kumar. All Rights Reserved.
         </p>
       </div>
     </footer>
