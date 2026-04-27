@@ -62,7 +62,6 @@ Built a modern, highly interactive sales dashboard using Next.js 15 and Recharts
 This system is currently undergoing active calibration. The following circuits are open and pending closure:
 
 - [ ] **Resume Integration:** Uploading the latest version of my CV to the database. `[INSERT RESUME LINK HERE]`
-- [ ] **Media Routing:** Attaching final project demonstration videos and high-res hardware architecture images.
 - [ ] **Code Diagnostics & Fixes:** Applying pending code fixes, refactoring a few minor responsive layout bugs on mobile devices, and stabilizing UI animations.
 
 ---

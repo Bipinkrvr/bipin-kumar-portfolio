@@ -1,5 +1,6 @@
 export const projectsData = [
   {
+    /*prj_1 */
     id: "automated-motor-qc",
     title: "Automated Quality Control Rig for DC Motors",
     description: "Built a smart hardware testing system to automatically identify defective, overheating motors before they reach production.",
@@ -19,12 +20,13 @@ export const projectsData = [
       techStack: ["C++", "Python", "Jupyter Notebook", "scikit-learn", "pandas"],
       hardware: ["ESP32", "DHT11 Sensor", "L298D Motor Driver", "5V Relay Module", "SSD1306 OLED Display", "Passive Buzzer"],
       media: {
-        images: ["/dummy-images/motor-qc-architecture.png", "/dummy-images/motor-qc-wiring.png"],
-        video: "/dummy-videos/motor-qc-demo.mp4"
+        images: ["/assets/prj_1/motor-qc-architecture.png", "/assets/prj_1/motor-qc-wiring.png"],
+        video: "https://www.youtube.com/embed/MMl0Gv_sykc?si=f9QX0cwRHIYjwwge"
       }
     }
   },
   {
+    /*prj_2 */
     id: "smart-water-tank",
     title: "Smart Water Tank IoT System",
     description: "Engineered a complete, production-ready system to automatically monitor and control industrial/home water tanks.",
@@ -44,11 +46,13 @@ export const projectsData = [
       techStack: ["Flutter", "Dart", "Firebase Realtime DB", "Cloud Functions", "Node.js"],
       hardware: ["ESP32", "Ultrasonic Sensor (HC-SR04)", "5V Relay", "OLED Display"],
       media: {
-        images: ["/dummy-images/water-tank-app-screens.png", "/dummy-images/water-tank-architecture.png"],
-        video: "/dummy-videos/water-tank-demo.mp4"
+        images: [ "/assets/prj_2/smart-water-tank-device-image.jpg","/assets/prj_2/ESP32-Connection-Diagram-Model.png","/assets/prj_2/flowchart.png", "/assets/prj_2/dashboard-screen.jpg","/assets/prj_2/setting-screen.jpg","/assets/prj_2/motor-history-screen.jpg","/assets/prj_2/tank-level-history-screen.jpg","/assets/prj_2/app-drawer-screen.jpg"],
+        video: "https://www.youtube.com/embed/u7SZ2H8gCTA?si=Z3mcMeoHErbE1lcT"
       }
     }
   },
+
+  /*prj_3 */
   {
     id: "iot-phone-sensor",
     title: "Upcycled IoT Sensor Hub",
@@ -69,107 +73,12 @@ export const projectsData = [
       techStack: ["Python", "Flask", "Termux", "Ubuntu (proot)", "Plotly.js", "Bash"],
       hardware: ["Repurposed Android Smartphone"],
       media: {
-        images: ["/dummy-images/phone-sensor-dashboard.png"],
-        video: ""
+        images: ["/assets/prj_3/architecture.png","/assets/prj_3/screenshot-dashboard.png","/assets/prj_3/screenshot-livedata.png","/assets/prj_3/phone-sensor-dashboard.png"],
+        video: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7385323312396128256?compact=1"
       }
     }
   },
-  {
-    id: "nextjs-sales-dashboard",
-    title: "Interactive Sales Analytics Dashboard",
-    description: "Created a fast, scalable web dashboard to visualize sales trends and business data.",
-    tags: ["Next.js", "React", "TypeScript", "Data Visualization"],
-    github: "https://github.com/Bipinkrvr/Next.js-Advanced-Sales-Dashboard",
-    linkedin: "",
-    live: "https://next-js-advanced-sales-dashboard.vercel.app/",
-    details: {
-      problem: "Businesses struggle to quickly interpret raw multi-year sales data without a fast, interactive, and scalable visual interface.",
-      solution: "Built a modern, highly interactive sales dashboard using Next.js 15 and Recharts, strictly adhering to the Atomic Design methodology for maximum component reusability and UI scalability.",
-      features: [
-        "Next.js 15 App Router: Leverages Server Components for speed and Client Components for interactivity.",
-        "Atomic Design Structure: UI logically organized into scalable atoms and complex organisms.",
-        "Interactive Data Visualization: Recharts integration to display multi-year sales trends.",
-        "Type Safety: Fully typed codebase ensuring robust data handling."
-      ],
-      techStack: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "Recharts"],
-      media: {
-        images: ["/dummy-images/sales-dashboard-main.png"],
-        video: ""
-      }
-    }
-  },
-  {
-    id: "explore-jharkhand",
-    title: "Explore Jharkhand Web Platform",
-    description: "Developed a responsive promotional website highlighting regional industries, mineral wealth, and tourism.",
-    tags: ["HTML", "CSS", "UI/UX", "Responsive Design"],
-    github: "https://github.com/Bipinkrvr/Bipin_LetsUpgradeFrontendSprint",
-    linkedin: "",
-    live: "https://bipin-lets-upgrade-frontend-sprint.vercel.app/",
-    details: {
-      problem: "A lack of engaging, modern digital brochures to effectively promote the state of Jharkhand's natural beauty, industrial strength, and mineral wealth.",
-      solution: "Designed and developed a single-page, fully responsive promotional web platform utilizing modern CSS layout techniques, interactive grids, and a thematic design system.",
-      features: [
-        "CSS-Only Interactivity: Implemented clever click-to-reveal accordions using hidden radio buttons.",
-        "Thematic Design System: Deep forest greens and golden accents paired with Poppins typography.",
-        "Responsive Grid Layouts: Smart application of CSS Grid and Flexbox for adaptive image cards.",
-        "Micro-Interactions: Smooth hover animations for zooming and dynamic background overlays."
-      ],
-      techStack: ["HTML5", "CSS3", "UI/UX Design"],
-      media: {
-        images: ["/dummy-images/explore-jharkhand-hero.png"],
-        video: ""
-      }
-    }
-  },
-  {
-    id: "memorae-landing",
-    title: "Memorae App Landing Page",
-    description: "Built a highly animated, visually engaging landing page for a hackathon project.",
-    tags: ["React", "Framer Motion", "Tailwind CSS"],
-    github: "https://github.com/Bipinkrvr/memorae-landing-page",
-    linkedin: "",
-    live: "https://memorae-landing-page-kgou.vercel.app/",
-    details: {
-      problem: "Standard static landing pages fail to convey the dynamic, interactive nature of a 'mental operating system' application designed for a hackathon.",
-      solution: "Engineered a vibrant, component-based React landing page featuring complex scroll animations, dynamic counters, and glassmorphism UI elements powered by Framer Motion.",
-      features: [
-        "Component-Based Architecture: Broken down into 14 highly reusable Next.js UI components.",
-        "Advanced Scroll Animations: Features whileInView scroll triggers and dynamically stacking cards.",
-        "Dynamic Counters: Utilizes Framer Motion hooks to create engaging 'count-up' statistics.",
-        "Interactive Elements: Orbiting tags around phone mockups and fully interactive FAQ accordions."
-      ],
-      techStack: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
-      media: {
-        images: ["/dummy-images/memorae-hero.png"],
-        video: "/dummy-videos/memorae-scroll-demo.mp4"
-      }
-    }
-  },
-  {
-    id: "vlsi-digital-design",
-    title: "VLSI Digital Logic & FSM Design",
-    description: "Designed and simulated foundational digital circuits (Logic Gates, Adders) and a Finite State Machine (FSM).",
-    tags: ["VLSI", "Verilog", "ModelSim", "Digital Logic", "FSM"],
-    github: "https://github.com/Bipinkrvr/CODTECH-TASK-2",
-    linkedin: "https://www.linkedin.com/posts/bipinkrvr_i-have-completed-my-tasks-given-by-codtech-activity-7216369727969918976-bttI?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9nUx8B9pSDoZpCQMBGvSV3MRFOu7UMIT8",
-    live: "",
-    details: {
-      problem: "Foundational understanding of digital systems requires rigorous modeling and verification of logic gates, combinational circuits, and state machines prior to physical silicon fabrication.",
-      solution: "Designed, implemented, and successfully simulated a complete suite of foundational digital circuits and a 3-state Finite State Machine (FSM) using Verilog HDL and ModelSim.",
-      features: [
-        "Logic Gate Implementation: Designed modules for all fundamental gates (AND, OR, NOT, NAND, etc.).",
-        "Combinational Circuits: Engineered and simulated Half Adders, Full Adders, and Multiplexers.",
-        "FSM Architecture: Designed a 3-state Finite State Machine with strict transition logic.",
-        "Simulation & Debugging: Utilized ModelSim for extensive waveform analysis to verify correctness."
-      ],
-      techStack: ["Verilog HDL", "ModelSim", "VLSI Digital Design"],
-      media: {
-        images: ["/dummy-images/vlsi-fsm-waveform.png"],
-        video: ""
-      }
-    }
-  },
+  /*prj_4 */
   {
     id: "power-plant-dashboard",
     title: "Power Plant Maintenance Dashboard",
@@ -189,12 +98,13 @@ export const projectsData = [
       ],
       techStack: ["Power BI", "DAX", "Data Analytics", "Business Intelligence"],
       media: {
-        images: ["/dummy-images/power-bi-dashboard-1.png"],
-        video: ""
+        images: ["/assets/prj_4/page1.png","/assets/prj_4/page2.png","/assets/prj_4/page3.png"],
+        video: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7344231858290716674?compact=1"
       }
     }
   },
-  {
+ /*prj_5 */
+      {
     id: "residential-solar-autocad",
     title: "Residential Solar Power System Design",
     description: "Designed a complete Residential Solar Power System using industry-standard AutoCAD Electrical.",
@@ -213,8 +123,79 @@ export const projectsData = [
       ],
       techStack: ["AutoCAD Electrical", "Excel", "System Design"],
       media: {
-        images: ["/dummy-images/autocad-sld.png"],
-        video: ""
+        images: ["/assets/prj_5/sld-1.png","/assets/prj_5/legend_sheet-1.png","/assets/prj_5/notes-1.png","/assets/prj_5/BOM-1.png","/assets/prj_5/load calculation-1.png","/assets/prj_5/summary-1.png"],
+      }
+    }
+  },
+  /*prj_6 */
+      {
+    id: "vlsi-digital-design",
+    title: "VLSI Digital Logic & FSM Design",
+    description: "Designed and simulated foundational digital circuits (Logic Gates, Adders) and a Finite State Machine (FSM).",
+    tags: ["VLSI", "Verilog", "ModelSim", "Digital Logic", "FSM"],
+    github: "https://github.com/Bipinkrvr/CODTECH-TASK-2",
+    linkedin: "https://www.linkedin.com/posts/bipinkrvr_i-have-completed-my-tasks-given-by-codtech-activity-7216369727969918976-bttI?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9nUx8B9pSDoZpCQMBGvSV3MRFOu7UMIT8",
+    live: "",
+    details: {
+      problem: "Foundational understanding of digital systems requires rigorous modeling and verification of logic gates, combinational circuits, and state machines prior to physical silicon fabrication.",
+      solution: "Designed, implemented, and successfully simulated a complete suite of foundational digital circuits and a 3-state Finite State Machine (FSM) using Verilog HDL and ModelSim.",
+      features: [
+        "Logic Gate Implementation: Designed modules for all fundamental gates (AND, OR, NOT, NAND, etc.).",
+        "Combinational Circuits: Engineered and simulated Half Adders, Full Adders, and Multiplexers.",
+        "FSM Architecture: Designed a 3-state Finite State Machine with strict transition logic.",
+        "Simulation & Debugging: Utilized ModelSim for extensive waveform analysis to verify correctness."
+      ],
+      techStack: ["Verilog HDL", "ModelSim", "VLSI Digital Design"],
+      media: {
+        videos: ["https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7216369508880392194?compact=1" ,"https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7216369652514328577?compact=1"]
+      }
+    }
+  },
+  /*prj_7 */
+    {
+    id: "explore-jharkhand",
+    title: "Explore Jharkhand Web Platform",
+    description: "Developed a responsive promotional website highlighting regional industries, mineral wealth, and tourism.",
+    tags: ["HTML", "CSS", "UI/UX", "Responsive Design"],
+    github: "https://github.com/Bipinkrvr/Bipin_LetsUpgradeFrontendSprint",
+    linkedin: "",
+    live: "https://bipin-lets-upgrade-frontend-sprint.vercel.app/",
+    details: {
+      problem: "A lack of engaging, modern digital brochures to effectively promote the state of Jharkhand's natural beauty, industrial strength, and mineral wealth.",
+      solution: "Designed and developed a single-page, fully responsive promotional web platform utilizing modern CSS layout techniques, interactive grids, and a thematic design system.",
+      features: [
+        "CSS-Only Interactivity: Implemented clever click-to-reveal accordions using hidden radio buttons.",
+        "Thematic Design System: Deep forest greens and golden accents paired with Poppins typography.",
+        "Responsive Grid Layouts: Smart application of CSS Grid and Flexbox for adaptive image cards.",
+        "Micro-Interactions: Smooth hover animations for zooming and dynamic background overlays."
+      ],
+      techStack: ["HTML5", "CSS3", "UI/UX Design"],
+      media: {
+        video: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7349354358825730048?compact=1"
+      }
+    }
+  },
+  /*prj_8 */
+  {
+    id: "memorae-landing",
+    title: "Memorae App Landing Page",
+    description: "Built a highly animated, visually engaging landing page for a hackathon project.",
+    tags: ["React", "Framer Motion", "Tailwind CSS"],
+    github: "https://github.com/Bipinkrvr/memorae-landing-page",
+    linkedin: "",
+    live: "https://memorae-landing-page-kgou.vercel.app/",
+    details: {
+      problem: "Standard static landing pages fail to convey the dynamic, interactive nature of a 'mental operating system' application designed for a hackathon.",
+      solution: "Engineered a vibrant, component-based React landing page featuring complex scroll animations, dynamic counters, and glassmorphism UI elements powered by Framer Motion.",
+      features: [
+        "Component-Based Architecture: Broken down into 14 highly reusable Next.js UI components.",
+        "Advanced Scroll Animations: Features whileInView scroll triggers and dynamically stacking cards.",
+        "Dynamic Counters: Utilizes Framer Motion hooks to create engaging 'count-up' statistics.",
+        "Interactive Elements: Orbiting tags around phone mockups and fully interactive FAQ accordions."
+      ],
+      techStack: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+      media: {
+        video: "https://www.youtube.com/embed/R0l2yfxx8eE?si=dv1Qlff6Gsq5tiO9"
       }
     }
   }

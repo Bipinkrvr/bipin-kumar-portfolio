@@ -64,15 +64,29 @@ export default function SCADAProjectPage() {
   const [currentMedia, setCurrentMedia] = useState(0);
   const mediaContainerRef = useRef<HTMLDivElement>(null);
 
-  const sortedMediaList = useMemo(() => {
+const sortedMediaList = useMemo(() => {
     const mediaList: { type: string, url: string }[] = [];
     if (project.details?.media) {
-      if (project.details.media.video) {
-         const isYoutube = project.details.media.video.includes('youtube') || project.details.media.video.includes('youtu.be');
-         mediaList.push({ type: isYoutube ? 'youtube' : 'video', url: project.details.media.video });
-      }
-      if (Array.isArray(project.details.media.images)) {
-         project.details.media.images.forEach((imgUrl: string) => {
+      
+      // Tell TypeScript to treat media as 'any' to bypass strict checking
+      const mediaObj = project.details.media as any;
+      
+      // Now it won't throw an error when looking for 'videos'
+      const videoLinks = mediaObj.videos || (mediaObj.video ? [mediaObj.video] : []);
+      
+      videoLinks.forEach((videoUrl: string) => {
+         const isYoutube = videoUrl.includes('youtube') || videoUrl.includes('youtu.be');
+         const isLinkedin = videoUrl.includes('linkedin.com/embed');
+         
+         let mediaType = 'video';
+         if (isYoutube) mediaType = 'youtube';
+         else if (isLinkedin) mediaType = 'linkedin';
+
+         mediaList.push({ type: mediaType, url: videoUrl });
+      });
+
+      if (Array.isArray(mediaObj.images)) {
+         mediaObj.images.forEach((imgUrl: string) => {
            mediaList.push({ type: 'image', url: imgUrl });
          });
       }
@@ -265,7 +279,7 @@ export default function SCADAProjectPage() {
                 sortedMediaList.map((media, idx) => (
                   <div 
                     key={idx}
-                    className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+                    className={`absolute inset-0 transition-opacity duration-500 ease-in-out bg-black ${
                       idx === currentMedia ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
                     }`}
                   >
@@ -276,6 +290,13 @@ export default function SCADAProjectPage() {
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         className="w-full h-full object-cover"
+                      />
+                    ) : media.type === "linkedin" ? (
+                      <iframe 
+                        src={media.url}
+                        title={`${project.title} LinkedIn Video`}
+                        allowFullScreen
+                        className="w-full h-full object-contain"
                       />
                     ) : media.type === "video" ? (
                       <video 
