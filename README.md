@@ -31,7 +31,7 @@ Engineered an automated ESP32-based rig that uses a DHT11 sensor and predictive 
 ### 2. Smart Water Tank IoT System
 A complete, production-ready system to automatically monitor and control industrial/home water tanks. Features live water level percentage, dual-mode control (Auto/Manual), and secure 3-level authentication.
 * **Tech:** Flutter, Dart, Firebase Realtime DB, Cloud Functions, ESP32
-* 📸 **Project Image:** `![](/assets/prj_2/smart-water-tank-device-image.jpg)`
+* 📸 **Project Image:** ![](public/assets/prj_2/smart-water-tank-device-image.jpg)
 * 🎥 **Live Demo:** [Watch on YouTube](https://www.youtube.com/embed/u7SZ2H8gCTA?si=Z3mcMeoHErbE1lcT)
 
 ### 3. VyaparLens (AI-Assisted Startup)
