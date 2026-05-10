@@ -18,6 +18,7 @@ export function ProjectsSection() {
   }, []);
 
   const visualMap: Record<string, { icon: any, color: string }> = {
+    "smart-industrial-automation": { icon: Server, color: "amber" },
     "residential-solar-autocad": { icon: Zap, color: "amber" },
     "automated-motor-qc": { icon: Cpu, color: "emerald" },
     "power-plant-dashboard": { icon: Database, color: "blue" },

@@ -1,5 +1,41 @@
 export const projectsData = [
   {
+    /*prj_0 (NEW) */
+    id: "smart-industrial-automation",
+    title: "Smart Industrial Automation & Energy Management System",
+    description: "A complete digital twin and closed-loop control system bridging software logic with physical industrial hardware for automated quality control.",
+    tags: ["Siemens TIA Portal", "PLC", "Ladder Logic", "SCADA/HMI", "AutoCAD Electrical"],
+    github: "https://github.com/Bipinkrvr/smart-industrial-automation-and-energy-management-system",
+    linkedin: "https://www.linkedin.com/posts/bipinkrvr_industry-40-digital-twin-9-sheet-cad-package-ugcPost-7459148559502692352-6IdD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9nUx8B9pSDoZpCQMBGvSV3MRFOu7UMIT8",
+    live: "",
+    details: {
+      problem: "Industrial environments require robust, fail-safe systems that successfully bridge high-level system design with low-level physical hardware to manage quality control and prevent thermal or mechanical failures.",
+      solution: "Engineered a closed-loop control system utilizing a Siemens S7-1200 PLC and TIA Portal. Used AI as a technical partner to structure the complex architecture, resulting in a production-ready control panel with a fully integrated WinCC SCADA dashboard and a 9-sheet electrical documentation package.",
+      features: [
+        "Logic & Control: Programmed complex, deeply nested Ladder Logic networks with real-time energy calculation blocks.",
+        "SCADA/HMI Dashboard: Developed a WinCC interface for operators to track live energy telemetry, dynamic status, and critical alarms.",
+        "Hardware Drafting: Authored a professional 9-sheet AutoCAD Electrical package (SLDs, 415V 3-Phase power, and 24V DC control circuits).",
+        "Safety Architecture: Integrated hardwired Emergency Stop (E-Stop) and Overload Relay (OLR) networks for immediate fault cutoff."
+      ],
+      techStack: ["Siemens TIA Portal", "WinCC", "AutoCAD Electrical", "Ladder Logic (LAD)", "Modbus RS-485"],
+      hardware: ["Siemens S7-1200 PLC", "415V 3-Phase Power Circuits", "24V DC Control Circuits"],
+      media: {
+        images: [
+          "/assets/prj_0/SINGLE LINE DIAGRAM (SLD) & POWER DISTRIBUTION.jpg", 
+          "/assets/prj_0/415V 3-PHASE POWER WIRING SCHEMATIC.jpg", 
+          "/assets/prj_0/24V DC CONTROL CIRCUIT & PLC IO SCHEMATIC.jpg",
+          "/assets/prj_0/MODBUS RS-485 COMMUNICATION TOPOLOGY.jpg",
+          "/assets/prj_0/PLC LADDER LOGIC ALGORITHM & CONTROL NETWORKS.jpg",
+          "/assets/prj_0/CONTROL PANEL INTERNAL & EXTERNAL LAYOUT.jpg",
+          "/assets/prj_0/TERMINAL BLOCK (TB) WIRING DIAGRAM.jpg",
+          "/assets/prj_0/POINT-TO-POINT WIRING SCHEDULE.jpg",
+          "/assets/prj_0/MASTER BILL OF MATERIALS (BOM).jpg",
+        ],
+        videos: ["https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7459204031010332672?compact=1"] 
+      }
+    }
+  },
+  {
     /*prj_1 */
     id: "automated-motor-qc",
     title: "Automated Quality Control Rig for DC Motors",
@@ -51,7 +87,6 @@ export const projectsData = [
       }
     }
   },
-
   /*prj_3 */
   {
     id: "iot-phone-sensor",
